@@ -1,4 +1,4 @@
---creare baza de date
+--Creare baza de date
 CREATE DATABASE ShelterFlow;
 GO
 
@@ -59,4 +59,38 @@ CREATE TABLE emergency_events (
                                           estimated_affected_people IS NULL
                                               OR estimated_affected_people >= 0
                                           )
+);
+
+--Creare tabela pentru adaposturi
+CREATE TABLE shelters (
+                          shelter_id INT IDENTITY(1,1) PRIMARY KEY,
+                          name NVARCHAR(150) NOT NULL,
+
+--Localizare geografica
+                          country NVARCHAR(100) NOT NULL,
+                          county NVARCHAR(100) NOT NULL,
+                          locality NVARCHAR(100) NOT NULL,
+                          address NVARCHAR(250) NOT NULL,
+
+--Capacitatea totala trebuie sa fie mai mare decat 0
+                          total_capacity INT NOT NULL
+                              CONSTRAINT chk_shelter_capacity
+                                  CHECK (total_capacity > 0),
+
+--Status
+                          status VARCHAR(10) NOT NULL DEFAULT 'OPEN'
+                              CONSTRAINT chk_shelter_status
+                                  CHECK ( status IN ('OPEN', 'CLOSED')),
+
+--Date de contact
+                          phone_number VARCHAR(20) NULL,
+                          email VARCHAR(100) NULL,
+
+--Facilitati
+                          access_ramp BIT NOT NULL DEFAULT 0,
+                          children_area BIT NOT NULL DEFAULT 0,
+                          medical_room BIT NOT NULL DEFAULT 0,
+                          accepts_pets BIT NOT NULL DEFAULT 0,
+
+                          public_information NVARCHAR(500) NULL
 );
