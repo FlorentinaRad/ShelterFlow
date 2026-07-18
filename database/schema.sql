@@ -19,6 +19,7 @@ CREATE TABLE emergency_events (
                                                      'EARTHQUAKE',
                                                      'LANDSLIDE',
                                                      'EXTREME_WEATHER',
+                                                     'AIR_RAID',
                                                      'OTHER'
                                           )),
 

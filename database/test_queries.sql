@@ -169,3 +169,27 @@ VALUES (
 
 SELECT *
 FROM shelters;
+
+-- tabela nu este referita prin foreign keys asa ca am preferat sa o sterg si sa adaug 'AIR_RAID'
+DROP TABLE IF EXISTS emergency_events;
+GO
+
+INSERT INTO emergency_events (
+    name,
+    type,
+    country,
+    county,
+    locality,
+    start_datetime
+)
+VALUES (
+    N'Alertă de atac aerian',
+    'AIR_RAID',
+    N'România',
+    N'Tulcea',
+    N'Tulcea',
+    '2026-07-18T10:00:00'
+);
+
+SELECT *
+FROM emergency_events;
