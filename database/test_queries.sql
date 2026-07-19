@@ -245,7 +245,7 @@ INSERT INTO evacuation_records (
     person_id,
     event_id,
     evacuation_location,
-    need_assistance,
+    needs_assistance,
     assistance_details,
     notes
 )
@@ -281,7 +281,7 @@ SELECT
     er.registration_datetime,
     er.evacuation_location,
     CASE
-        WHEN er.need_assistance = 1 THEN 'YES'
+        WHEN er.needs_assistance = 1 THEN 'YES'
         ELSE 'NO'
         END AS needs_assistance,
     er.assistance_details

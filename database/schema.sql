@@ -37,14 +37,15 @@ CREATE TABLE emergency_events (
                                   CONSTRAINT chk_emergency_event_dates
                                       CHECK ( end_datetime IS NULL
                                           OR end_datetime >= start_datetime
-                                          ),
 
+                                          ),
+--Statusuri acceptate
                                   status VARCHAR(10) NOT NULL
                                       DEFAULT 'ACTIVE',
-    --Statusuri acceptate
+
                                   CONSTRAINT chk_emergency_event_status
                                       CHECK (status IN('ACTIVE', 'CLOSED')),
-    --Evenimentul activ nu are data de finalizare, iar un eveniment inchis trebuie sa aiba una
+--Evenimentul activ nu are data de finalizare, iar un eveniment inchis trebuie sa aiba una
                                   CONSTRAINT chk_emergency_event_status_dates
                                       CHECK (
                                           (status='ACTIVE' AND end_datetime IS NULL)
@@ -61,6 +62,7 @@ CREATE TABLE emergency_events (
                                               OR estimated_affected_people >= 0
                                           )
 );
+GO
 
 --Creare tabela pentru adaposturi
 CREATE TABLE shelters (
@@ -95,6 +97,7 @@ CREATE TABLE shelters (
 
                           public_information NVARCHAR(500) NULL
 );
+GO
 
 --Creare tabela persoane
 CREATE TABLE persons (
@@ -118,7 +121,7 @@ CREATE TABLE persons (
 --Informatii suplimentare
                          notes NVARCHAR(500) NULL
 );
-
+GO
 
 --Creare tabela pentru asocierea unei persoane la un eveniment de urgenta
 CREATE TABLE evacuation_records (
@@ -145,14 +148,14 @@ CREATE TABLE evacuation_records (
                                     evacuation_location NVARCHAR(250) NULL,
 
 --Indica daca persoana are nevoie de ajutor suplimentar
-                                    need_assistance BIT NOT NULL DEFAULT 0,
+                                    needs_assistance BIT NOT NULL DEFAULT 0,
 --Detalii despre transport, mobilitate sau alte nevoi
                                     assistance_details NVARCHAR(250) NULL,
 
 --Informatii suplimentare
                                     notes NVARCHAR(500) NULL
 );
-
+GO
 
 --Creare tabela care pastreaza istoricul cazarilor persoanelor evacuate
 CREATE TABLE accommodations(
@@ -185,7 +188,7 @@ CREATE TABLE accommodations(
 CREATE UNIQUE INDEX uq_active_accommodation_per_evacuation
     ON accommodations(evacuation_id)
     WHERE check_out_datetime IS NULL;
-
+GO
 
 --Creare tabela pentru rapoartele de disparitie
 CREATE TABLE missing_person_reports (
@@ -246,3 +249,4 @@ CREATE TABLE missing_person_reports (
 
                                         notes NVARCHAR(1000) NULL
 );
+GO
