@@ -1,4 +1,6 @@
---verificare tabela emergency_events
+--Teste manuale realizate in timpul dezvoltarii bazei de date
+
+--Verificare tabela emergency_events
 INSERT INTO emergency_events (
     name,
     type,
@@ -22,11 +24,11 @@ VALUES (
            100
        );
 
---afisare rezultat
+--Afisare rezultat
 SELECT *
 FROM emergency_events;
 
---testare reguli
+--Testare reguli
 INSERT INTO emergency_events (
     name,
     type,
@@ -41,7 +43,7 @@ VALUES (
            N'Cluj',
            '2026-07-17T10:00:00'
        );
---regula functioneaza
+--Regula functioneaza
 
 INSERT INTO emergency_events (
     name,
@@ -61,12 +63,12 @@ VALUES (
            '2026-07-17T12:00:00',
            'ACTIVE'
        );
---regula functioneaza
+--Regula functioneaza
 
 SELECT *
 FROM emergency_events;
 
---modificare valida, am incheiat un eveniment existent
+--Modificare valida, am incheiat un eveniment existent
 UPDATE emergency_events
 SET status = 'CLOSED',
     end_datetime = '2026-07-18T09:15:00'
@@ -76,7 +78,7 @@ SELECT *
 FROM emergency_events
 WHERE event_id = 1;
 
---verificare tabela shelters
+--Verificare tabela shelters
 INSERT INTO shelters (
     name,
     country,
@@ -111,7 +113,7 @@ VALUES (
 SELECT *
 FROM shelters;
 
---testare capacitate invalida
+--Testare capacitate invalida
 INSERT INTO shelters (
     name,
     country,
@@ -129,7 +131,7 @@ VALUES (
            0
        );
 
---testare status invalid
+--Testare status invalid
 INSERT INTO shelters (
     name,
     country,
@@ -149,7 +151,7 @@ VALUES (
            'FULL'
        );
 
---
+
 INSERT INTO shelters (
     name,
     country,
@@ -170,29 +172,6 @@ VALUES (
 SELECT *
 FROM shelters;
 
--- tabela nu este referita prin foreign keys asa ca am preferat sa o sterg si sa adaug 'AIR_RAID'
-DROP TABLE IF EXISTS emergency_events;
-GO
-
-INSERT INTO emergency_events (
-    name,
-    type,
-    country,
-    county,
-    locality,
-    start_datetime
-)
-VALUES (
-    N'Alertă de atac aerian',
-    'AIR_RAID',
-    N'România',
-    N'Tulcea',
-    N'Tulcea',
-    '2026-07-18T10:00:00'
-);
-
-SELECT *
-FROM emergency_events;
 
 --Testare tabela persons
 INSERT INTO persons (
@@ -224,7 +203,7 @@ VALUES (
 SELECT *
 FROM persons;
 
---eroare deoarece lipseste firt_name care nu permite NULL
+--Eroare deoarece lipseste firt_name, coloana care nu permite NULL
 INSERT INTO persons (
     last_name
 )
@@ -272,7 +251,7 @@ FROM evacuation_records er
          JOIN emergency_events ee
               ON er.event_id = ee.event_id;
 
---afisare mai detaliata
+--Afisare mai detaliata
 SELECT
     er.evacuation_id,
     p.first_name,
@@ -292,7 +271,7 @@ FROM evacuation_records er
               ON er.event_id = ee.event_id;
 
 
---testare regula UNIQUE --inserare respinsa
+--Testare regula UNIQUE --inserare respinsa
 INSERT INTO evacuation_records (
     person_id,
     event_id
@@ -302,7 +281,7 @@ VALUES (
            1
        );
 
---testare cheie externa --respin, nu exista persoana 999
+--Testare cheie externa --respin, nu exista persoana 999
 INSERT INTO evacuation_records (
     person_id,
     event_id
@@ -342,8 +321,8 @@ SELECT
 FROM accommodations
 ORDER BY accommodation_id;
 
---check-out inainte de check-in --eroare
---id cazare activa
+--Check-out inainte de check-in --eroare
+--Id cazare activa
 SELECT *
 FROM accommodations
 WHERE check_out_datetime IS NULL;
@@ -352,13 +331,13 @@ UPDATE accommodations
 SET check_out_datetime = DATEADD(MINUTE, -10, check_in_datetime)
 WHERE accommodation_id = 2;
 
---check-out valid
+--Check-out valid
 UPDATE accommodations
 SET check_out_datetime = SYSDATETIME()
 WHERE accommodation_id = 2;
 
 
---evacuare inexistenta
+--Evacuare inexistenta
 INSERT INTO accommodations (
     evacuation_id,
     shelter_id
@@ -368,7 +347,7 @@ VALUES (
            2
        );
 
---adapost inexistent
+--Adapost inexistent
 INSERT INTO accommodations (
     evacuation_id,
     shelter_id
@@ -378,7 +357,7 @@ VALUES (
            9999
        );
 
---istoric complet
+--Istoric complet
 SELECT
     a.accommodation_id,
     p.first_name,
@@ -401,7 +380,7 @@ ORDER BY a.check_in_datetime;
 
 
 --Testare tabela missing_person_reports
---verificare ID existente
+--Verificare ID existente
 SELECT person_id, first_name, last_name
 FROM persons;
 
@@ -409,7 +388,7 @@ SELECT event_id, name
 FROM emergency_events;
 
 
---raport valid
+--Raport valid
 INSERT INTO missing_person_reports (
     person_id,
     event_id,
@@ -429,7 +408,7 @@ VALUES (
            N'Persoana purta o geacă albastră.'
        );
 
---afisare
+--Afisare
 SELECT
     mpr.report_id,
     p.first_name,
@@ -446,7 +425,7 @@ FROM missing_person_reports mpr
          JOIN emergency_events ee
               ON mpr.event_id = ee.event_id;
 
---raport duplicat
+--Raport duplicat
 INSERT INTO missing_person_reports (
     person_id,
     event_id,
@@ -458,7 +437,7 @@ VALUES (
            N'Alt raportor'
        );
 
---rezolvare valida
+--Rezolvare valida
 UPDATE missing_person_reports
 SET status = 'LOCATED_SAFE',
     resolved_datetime = SYSDATETIME()
