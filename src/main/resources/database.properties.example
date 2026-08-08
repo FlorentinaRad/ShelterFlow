@@ -1,0 +1,7 @@
+db.server=localhost
+db.port=1433
+db.name=ShelterFlow
+db.authentication=windows
+
+db.user=
+db.password=
