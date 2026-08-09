@@ -45,9 +45,7 @@ public class PersonRepository {
             statement.setString(2, person.getLastName());
 
             if (person.getBirthDate() != null) {
-                statement.setDate(
-                        3,
-                        Date.valueOf(person.getBirthDate())
+                statement.setDate(3, Date.valueOf(person.getBirthDate())
                 );
             } else {
                 statement.setNull(3, Types.DATE);

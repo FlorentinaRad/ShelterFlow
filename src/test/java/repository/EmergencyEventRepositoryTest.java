@@ -87,10 +87,11 @@ public class EmergencyEventRepositoryTest {
         );
         EmergencyEvent savedEvent = repository.save(emergencyEvent);
         savedEvent.setName("Updated Test Event");
-        boolean update = repository.update(savedEvent);
+        boolean updated = repository.update(savedEvent);
 
         Optional<EmergencyEvent> result = repository.findById(savedEvent.getEventId());
         assertTrue(result.isPresent());
+        assertTrue(updated);
         assertEquals("Updated Test Event", result.get().getName());
     }
 
@@ -120,4 +121,5 @@ public class EmergencyEventRepositoryTest {
         assertTrue(deleted);
         assertTrue(result.isEmpty());
     }
+
 }

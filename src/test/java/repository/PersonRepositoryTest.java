@@ -87,10 +87,10 @@ public class PersonRepositoryTest {
         savedPerson.setHomeAddress("New address");
         savedPerson.setNotes("After update");
 
-        boolean update = repository.update(savedPerson);
+        boolean updated = repository.update(savedPerson);
 
         Optional<Person> updatedPerson = repository.findById(savedPerson.getPersonId());
-        assertTrue(update);
+        assertTrue(updated);
         assertEquals("Updated", updatedPerson.get().getFirstName());
         assertEquals("New address", updatedPerson.get().getHomeAddress());
         assertEquals("After update", updatedPerson.get().getNotes());

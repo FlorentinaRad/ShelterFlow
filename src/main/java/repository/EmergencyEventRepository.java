@@ -44,15 +44,11 @@ public class EmergencyEventRepository {
             statement.setString(5, event.getLocality());
             statement.setString(6, event.getAffectedArea());
 
-            statement.setTimestamp(
-                    7,
-                    Timestamp.valueOf(event.getStartDatetime())
+            statement.setTimestamp(7, Timestamp.valueOf(event.getStartDatetime())
             );
 
             if (event.getEndDatetime() != null) {
-                statement.setTimestamp(
-                        8,
-                        Timestamp.valueOf(event.getEndDatetime())
+                statement.setTimestamp(8, Timestamp.valueOf(event.getEndDatetime())
                 );
             } else {
                 statement.setNull(8, Types.TIMESTAMP);
@@ -192,8 +188,7 @@ public class EmergencyEventRepository {
     public boolean update(EmergencyEvent event) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement =
-                        connection.prepareStatement(UPDATE_EMERGENCY_EVENT_SQL)
+                PreparedStatement statement = connection.prepareStatement(UPDATE_EMERGENCY_EVENT_SQL)
         ) {
             statement.setString(1, event.getName());
             statement.setString(2, event.getType().name());
@@ -202,15 +197,11 @@ public class EmergencyEventRepository {
             statement.setString(5, event.getLocality());
             statement.setString(6, event.getAffectedArea());
 
-            statement.setTimestamp(
-                    7,
-                    Timestamp.valueOf(event.getStartDatetime())
+            statement.setTimestamp(7, Timestamp.valueOf(event.getStartDatetime())
             );
 
             if (event.getEndDatetime() != null) {
-                statement.setTimestamp(
-                        8,
-                        Timestamp.valueOf(event.getEndDatetime())
+                statement.setTimestamp(8, Timestamp.valueOf(event.getEndDatetime())
                 );
             } else {
                 statement.setNull(8, Types.TIMESTAMP);
@@ -219,12 +210,9 @@ public class EmergencyEventRepository {
             statement.setString(9, event.getStatus().name());
             statement.setString(10, event.getDescription());
             statement.setInt(11, event.getEstimatedAffectedPeople());
-
-            // ID-ul evenimentului care trebuie modificat
             statement.setInt(12, event.getEventId());
 
             int affectedRows = statement.executeUpdate();
-
             return affectedRows == 1;
         }
     }
@@ -243,7 +231,6 @@ public class EmergencyEventRepository {
             statement.setInt(1, eventId);
 
             int affectedRows = statement.executeUpdate();
-
             return affectedRows == 1;
         }
     }
