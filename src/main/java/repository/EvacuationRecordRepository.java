@@ -181,4 +181,45 @@ public class EvacuationRecordRepository {
             return affectedRows == 1;
         }
     }
+
+    private static final String FIND_BY_PERSON_AND_EVENT_SQL = """
+        SELECT evacuation_id,
+               person_id,
+               event_id,
+               registration_datetime,
+               evacuation_location,
+               needs_assistance,
+               assistance_details,
+               notes
+        FROM evacuation_records
+        WHERE person_id = ?
+          AND event_id = ?
+        """;
+
+    public Optional<EvacuationRecord> findByPersonIdAndEventId(Integer personId, Integer eventId) throws SQLException{
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_PERSON_AND_EVENT_SQL)
+                ) {
+            statement.setInt(1, personId);
+            statement.setInt(2, eventId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    EvacuationRecord evacuationRecord = new EvacuationRecord(
+                            resultSet.getInt("evacuation_id"),
+                            resultSet.getInt("person_id"),
+                            resultSet.getInt("event_id"),
+                            resultSet.getTimestamp("registration_datetime").toLocalDateTime(),
+                            resultSet.getString("evacuation_location"),
+                            resultSet.getBoolean("needs_assistance"),
+                            resultSet.getString("assistance_details"),
+                            resultSet.getString("notes")
+                    );
+                    return Optional.of(evacuationRecord);
+                }
+                return Optional.empty();
+            }
+        }
+    }
 }

@@ -102,7 +102,7 @@ public class EmergencyEventService {
     }
 
     public void deleteEmergencyEvent(Integer eventId) throws SQLException {
-        EmergencyEvent emergencyEvent = requireEmergencyEventById(eventId);
+        requireEmergencyEventById(eventId);
 
         boolean deleted = emergencyEventRepository.delete(eventId);
         if (!deleted) {
