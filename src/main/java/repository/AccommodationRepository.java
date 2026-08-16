@@ -3,6 +3,7 @@ package repository;
 import config.DatabaseConnection;
 import model.Accommodation;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,6 +178,52 @@ public class AccommodationRepository {
 
             int affectedRows = statement.executeUpdate();
             return affectedRows == 1;
+        }
+    }
+
+    private static final String FIND_ACTIVE_BY_EVACUATION_ID_SQL = """
+        SELECT *
+        FROM accommodations
+        WHERE evacuation_id = ?
+          AND check_out_datetime IS NULL
+        """;
+    public Optional<Accommodation> findActiveByEvacuationId(Integer evacuationId) throws SQLException{
+        try (Connection connection = DatabaseConnection.getConnection();
+        PreparedStatement statement = connection.prepareStatement(FIND_ACTIVE_BY_EVACUATION_ID_SQL)) {
+            statement.setInt(1, evacuationId);
+
+            try(ResultSet resultSet = statement.executeQuery()) {
+                if(resultSet.next()) {
+                    Accommodation accommodation = new Accommodation(resultSet.getInt("accommodation_id"),
+                            resultSet.getInt("evacuation_id"),
+                            resultSet.getInt("shelter_id"),
+                            resultSet.getTimestamp("check_in_datetime").toLocalDateTime(),
+                            resultSet.getTimestamp("check_out_datetime") == null ? null : resultSet.getTimestamp("check_out_datetime").toLocalDateTime(),
+                            resultSet.getString("notes"));
+                    return Optional.of(accommodation);
+                }
+                return Optional.empty();
+            }
+        }
+    }
+
+    private static final String COUNT_ACTIVE_BY_SHELTER_ID_SQL = """
+        SELECT COUNT(*) AS active_count
+        FROM accommodations
+        WHERE shelter_id = ?
+          AND check_out_datetime IS NULL
+        """;
+    public int countActiveByShelterId(Integer shelterId) throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement(COUNT_ACTIVE_BY_SHELTER_ID_SQL)) {
+            statement.setInt(1, shelterId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("active_count");
+                }
+                return 0;
+            }
         }
     }
 }

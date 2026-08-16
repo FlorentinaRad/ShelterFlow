@@ -226,4 +226,49 @@ public class MissingPersonReportRepository {
         }
     }
 
+    private static final String FIND_BY_PERSON_AND_EVENT_SQL = """
+        SELECT report_id,
+               person_id,
+               event_id,
+               reported_datetime,
+               last_seen_datetime,
+               last_known_location,
+               reported_by_name,
+               reported_by_phone,
+               status,
+               resolved_datetime,
+               notes
+        FROM missing_person_reports
+        WHERE person_id = ?
+          AND event_id = ?
+        """;
+    public Optional<MissingPersonReport> findByPersonIdAndEventId(Integer personId, Integer eventId) throws SQLException {
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_PERSON_AND_EVENT_SQL)) {
+
+            statement.setInt(1, personId);
+            statement.setInt(2, eventId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    MissingPersonReport report =
+                            new MissingPersonReport(
+                                    resultSet.getInt("report_id"),
+                                    resultSet.getInt("person_id"),
+                                    resultSet.getInt("event_id"),
+                                    resultSet.getTimestamp("reported_datetime").toLocalDateTime(),
+                                    resultSet.getTimestamp("last_seen_datetime") == null ? null : resultSet.getTimestamp("last_seen_datetime").toLocalDateTime(),
+                                    resultSet.getString("last_known_location"),
+                                    resultSet.getString("reported_by_name"),
+                                    resultSet.getString("reported_by_phone"),
+                                    MissingPersonStatus.valueOf(resultSet.getString("status")),
+                                    resultSet.getTimestamp("resolved_datetime") == null ? null : resultSet.getTimestamp("resolved_datetime").toLocalDateTime(),
+                                    resultSet.getString("notes")
+                            );
+                    return Optional.of(report);
+                }
+                return Optional.empty();
+            }
+        }
+    }
+
 }
