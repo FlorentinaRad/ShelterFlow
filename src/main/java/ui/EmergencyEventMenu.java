@@ -6,7 +6,9 @@ import model.enums.EmergencyType;
 import service.EmergencyEventService;
 
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,32 +31,39 @@ public class EmergencyEventMenu {
             System.out.println("5. Delete emergency event");
             System.out.println("0. Back");
 
-            System.out.println("Choose an option: ");
-            int option = scanner.nextInt();
-            scanner.nextLine();
+            try {
+                System.out.println("Choose an option: ");
+                int option = scanner.nextInt();
+                scanner.nextLine();
 
-            if (option == 0) {
-                break;
-            }
+                if (option == 0) {
+                    break;
+                }
 
-            switch (option) {
-                case 1:
-                    registerEmergencyEvent();
-                    break;
-                case 2:
-                    findEmergencyEventById();
-                    break;
-                case 3:
-                    listAllEmergencyEvents();
-                    break;
-                case 4:
-                    updateEmergencyEvent();
-                    break;
-                case 5:
-                    deleteEmergencyEvent();
-                    break;
-                default:
-                    System.out.println("Invalid option.");
+                switch (option) {
+                    case 1:
+                        registerEmergencyEvent();
+                        break;
+                    case 2:
+                        findEmergencyEventById();
+                        break;
+                    case 3:
+                        listAllEmergencyEvents();
+                        break;
+                    case 4:
+                        updateEmergencyEvent();
+                        break;
+                    case 5:
+                        deleteEmergencyEvent();
+                        break;
+                    default:
+                        System.out.println("Invalid option.");
+                }
+            } catch(InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a number.");
+                scanner.nextLine();
+            } catch (DateTimeException e) {
+                System.out.println("Invalid date or time.");
             }
         }
     }
@@ -116,9 +125,15 @@ public class EmergencyEventMenu {
 
         System.out.println("Locality (optional): ");
         String locality = scanner.nextLine().trim();
+        if (locality.isEmpty()) {
+            locality = null;
+        }
 
         System.out.print("Affected area (optional): ");
         String affectedArea = scanner.nextLine().trim();
+        if (affectedArea.isEmpty()) {
+            affectedArea = null;
+        }
 
         System.out.println("Start date time: ");
         System.out.println("Year: ");
@@ -135,8 +150,8 @@ public class EmergencyEventMenu {
         LocalDateTime startDateTime = LocalDateTime.of(startYear, startMonth, startDay, startHour, startMinute);
 
         System.out.println("Status: ");
-        System.out.println("1. Active");
-        System.out.println("2. Closed");
+        System.out.println("1. ACTIVE");
+        System.out.println("2. CLOSED");
         System.out.println("Choose status: ");
         int statusOption = scanner.nextInt();
         scanner.nextLine();
@@ -174,6 +189,9 @@ public class EmergencyEventMenu {
 
         System.out.print("Description (optional): ");
         String description = scanner.nextLine().trim();
+        if (description.isEmpty()) {
+            description = null;
+        }
 
         System.out.println("Estimated affected people (-1 if unknown): ");
         Integer estimatedAffectedPeople = scanner.nextInt();
@@ -260,7 +278,7 @@ public class EmergencyEventMenu {
             switch (option) {
                 case 1:
                     System.out.println("New name: ");
-                    event.setName(scanner.nextLine());
+                    event.setName(scanner.nextLine().trim());
                     break;
                 case 2:
                     System.out.println("New type:");
@@ -305,19 +323,27 @@ public class EmergencyEventMenu {
                     break;
                 case 3:
                     System.out.println("New country: ");
-                    event.setCountry(scanner.nextLine());
+                    event.setCountry(scanner.nextLine().trim());
                     break;
                 case 4:
                     System.out.println("New county: ");
-                    event.setCounty(scanner.nextLine());
+                    event.setCounty(scanner.nextLine().trim());
                     break;
                 case 5:
                     System.out.println("New locality: ");
-                    event.setLocality(scanner.nextLine());
+                    String locality = scanner.nextLine().trim();
+                    if (locality.isEmpty()) {
+                        locality = null;
+                    }
+                    event.setLocality(locality);
                     break;
                 case 6:
                     System.out.println("New affected area: ");
-                    event.setAffectedArea(scanner.nextLine());
+                    String affectedArea = scanner.nextLine().trim();
+                    if (affectedArea.isEmpty()) {
+                        affectedArea = null;
+                    }
+                    event.setAffectedArea(affectedArea);
                     break;
                 case 7 :
                     System.out.println("New start date time: ");
@@ -353,8 +379,8 @@ public class EmergencyEventMenu {
                     break;
                 case 9:
                     System.out.println("New status: ");
-                    System.out.println("1. Active");
-                    System.out.println("2. Closed");
+                    System.out.println("1. ACTIVE");
+                    System.out.println("2. CLOSED");
                     System.out.println("Choose status: ");
                     int statusOption = scanner.nextInt();
                     scanner.nextLine();
@@ -388,7 +414,11 @@ public class EmergencyEventMenu {
                     break;
                 case 10:
                     System.out.println("New description: ");
-                    event.setDescription(scanner.nextLine().trim());
+                    String description = scanner.nextLine().trim();
+                    if (description.isEmpty()) {
+                        description = null;
+                    }
+                    event.setDescription(description);
                     break;
                 case 11:
                     System.out.println("New estimated affected people (-1 if unknown): ");
