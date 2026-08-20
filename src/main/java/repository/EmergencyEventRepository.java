@@ -55,8 +55,11 @@ public class EmergencyEventRepository {
             }
             statement.setString(9, event.getStatus().name());
             statement.setString(10, event.getDescription());
-            statement.setInt(11, event.getEstimatedAffectedPeople());
-
+            if(event.getEstimatedAffectedPeople() != null) {
+                statement.setInt(11, event.getEstimatedAffectedPeople());
+            } else {
+                statement.setNull(11, Types.INTEGER);
+            }
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException(
@@ -99,8 +102,17 @@ public class EmergencyEventRepository {
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_ID_SQL)
         ) {
             statement.setInt(1, eventId);
+
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
+
+                    Integer estimatedAffectedPeople =
+                            resultSet.getInt("estimated_affected_people");
+
+                    if (resultSet.wasNull()) {
+                        estimatedAffectedPeople = null;
+                    }
+
                     EmergencyEvent event = new EmergencyEvent(
                             resultSet.getInt("event_id"),
                             resultSet.getString("name"),
@@ -110,13 +122,17 @@ public class EmergencyEventRepository {
                             resultSet.getString("locality"),
                             resultSet.getString("affected_area"),
                             resultSet.getTimestamp("start_datetime").toLocalDateTime(),
-                            resultSet.getTimestamp("end_datetime") != null ? resultSet.getTimestamp("end_datetime").toLocalDateTime() : null,
+                            resultSet.getTimestamp("end_datetime") != null
+                                    ? resultSet.getTimestamp("end_datetime").toLocalDateTime()
+                                    : null,
                             EmergencyStatus.valueOf(resultSet.getString("status")),
                             resultSet.getString("description"),
-                            resultSet.getInt("estimated_affected_people")
+                            estimatedAffectedPeople
                     );
+
                     return Optional.of(event);
                 }
+
                 return Optional.empty();
             }
         }
@@ -148,6 +164,13 @@ public class EmergencyEventRepository {
                 ResultSet resultSet = statement.executeQuery()
                 ) {
             while (resultSet.next()) {
+                Integer estimatedAffectedPeople =
+                        resultSet.getInt("estimated_affected_people");
+
+                if (resultSet.wasNull()) {
+                    estimatedAffectedPeople = null;
+                }
+
                 EmergencyEvent event = new EmergencyEvent(
                         resultSet.getInt("event_id"),
                         resultSet.getString("name"),
@@ -160,7 +183,7 @@ public class EmergencyEventRepository {
                         resultSet.getTimestamp("end_datetime") != null ? resultSet.getTimestamp("end_datetime").toLocalDateTime() : null,
                         EmergencyStatus.valueOf(resultSet.getString("status")),
                         resultSet.getString("description"),
-                        resultSet.getInt("estimated_affected_people")
+                        estimatedAffectedPeople
                 );
                 events.add(event);
             }
@@ -209,7 +232,11 @@ public class EmergencyEventRepository {
 
             statement.setString(9, event.getStatus().name());
             statement.setString(10, event.getDescription());
-            statement.setInt(11, event.getEstimatedAffectedPeople());
+            if (event.getEstimatedAffectedPeople() != null) {
+                statement.setInt(11, event.getEstimatedAffectedPeople());
+            } else {
+                statement.setNull(11, Types.INTEGER);
+            }
             statement.setInt(12, event.getEventId());
 
             int affectedRows = statement.executeUpdate();

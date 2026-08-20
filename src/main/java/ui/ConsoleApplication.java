@@ -1,6 +1,8 @@
 package ui;
 
+import repository.EmergencyEventRepository;
 import repository.PersonRepository;
+import service.EmergencyEventService;
 import service.PersonService;
 
 import java.util.Scanner;
@@ -11,6 +13,10 @@ public class ConsoleApplication {
    private final PersonRepository personRepository = new PersonRepository();
    private final PersonService personService = new PersonService(personRepository);
    private final PersonMenu personMenu = new PersonMenu(scanner, personService);
+
+   private final EmergencyEventRepository emergencyEventRepository = new EmergencyEventRepository();
+   private final EmergencyEventService emergencyEventService = new EmergencyEventService(emergencyEventRepository);
+   private final EmergencyEventMenu emergencyEventMenu = new EmergencyEventMenu(scanner, emergencyEventService);
 
    public void run() {
        while (true) {
@@ -36,7 +42,7 @@ public class ConsoleApplication {
                    personMenu.show();
                    break;
                case 2:
-                   System.out.println("Emergency events selected");
+                   emergencyEventMenu.show();
                    break;
                case 3:
                    System.out.println("Shelters selected");

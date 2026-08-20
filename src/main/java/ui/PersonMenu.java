@@ -5,7 +5,6 @@ import service.PersonService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
 
@@ -115,6 +114,8 @@ public class PersonMenu {
         try {
             personService.registerPerson(person);
             System.out.println("Person registered successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -128,6 +129,8 @@ public class PersonMenu {
         try{
             Person person = personService.requirePersonById(personId);
             System.out.println(person);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -146,7 +149,7 @@ public class PersonMenu {
 
     private void updatePerson() {
         System.out.println("Person ID: ");
-        int personId = scanner.nextInt();;
+        int personId = scanner.nextInt();
         scanner.nextLine();
 
         try {
@@ -223,7 +226,9 @@ public class PersonMenu {
             personService.updatePerson(person);
             System.out.println("Person updated successfully.");
 
-        }catch (SQLException e) {
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -236,6 +241,8 @@ public class PersonMenu {
         try{
             personService.deletePerson(personId);
             System.out.println("Person deleted successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
