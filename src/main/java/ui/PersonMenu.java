@@ -76,15 +76,29 @@ public class PersonMenu {
         System.out.println("Last name: ");
         String lastName = scanner.nextLine().trim();
 
-        System.out.println("Birth year: ");
-        int year = scanner.nextInt();
-        System.out.println("Birth month: ");
-        int month = scanner.nextInt();
-        System.out.println("Birth day: ");
-        int day = scanner.nextInt();
+        System.out.println("Birth date known?");
+        System.out.println("1. Yes");
+        System.out.println("2. No");
+        int option = scanner.nextInt();
         scanner.nextLine();
+        LocalDate birthDate;
 
-        LocalDate birthDate = LocalDate.of(year, month, day);
+        if (option == 1) {
+            System.out.println("Year: ");
+            int year = scanner.nextInt();
+            System.out.println("Month: ");
+            int month = scanner.nextInt();
+            System.out.println("Day: ");
+            int day = scanner.nextInt();
+            scanner.nextLine();
+            birthDate = LocalDate.of(year, month, day);
+
+        } else if (option == 2) {
+            birthDate = null;
+        } else {
+            System.out.println("Invalid option.");
+            return;
+        }
 
         System.out.println("Phone number (optional): ");
         String phoneNumber = scanner.nextLine().trim();
@@ -210,15 +224,29 @@ public class PersonMenu {
                     person.setLastName(scanner.nextLine().trim());
                     break;
                 case 3:
-                    System.out.print("New birth year: ");
-                    int year = scanner.nextInt();
-                    System.out.print("New birth month: ");
-                    int month = scanner.nextInt();
-                    System.out.print("New birth day: ");
-                    int day = scanner.nextInt();
+                    System.out.println("New birth date:");
+                    System.out.println("1. Yes");
+                    System.out.println("2. No");
+                    int birthDateOption = scanner.nextInt();
                     scanner.nextLine();
-                    LocalDate birthDate = LocalDate.of(year, month, day);
-                    person.setBirthDate(birthDate);
+
+                    if (birthDateOption == 1) {
+                        System.out.println("Year: ");
+                        int year = scanner.nextInt();
+                        System.out.println("Month: ");
+                        int month = scanner.nextInt();
+                        System.out.println("Day: ");
+                        int day = scanner.nextInt();
+                        scanner.nextLine();
+                        LocalDate birthDate = LocalDate.of(year, month, day);
+                        person.setBirthDate(birthDate);
+
+                    } else if (birthDateOption == 2) {
+                        person.setBirthDate(null);
+                    } else {
+                        System.out.println("Invalid option.");
+                        return;
+                    }
                     break;
                 case 4:
                     System.out.print("New phone number: ");

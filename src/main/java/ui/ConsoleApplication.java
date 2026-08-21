@@ -29,6 +29,9 @@ public class ConsoleApplication {
    private final AccommodationService accommodationService = new AccommodationService(accommodationRepository, evacuationRecordService, shelterService);
    private final AccommodationMenu accommodationMenu = new AccommodationMenu(scanner, accommodationService);
 
+   private final MissingPersonReportRepository missingPersonReportRepository = new MissingPersonReportRepository();
+   private final MissingPersonReportService missingPersonReportService = new MissingPersonReportService(missingPersonReportRepository, personService, emergencyEventService);
+   private final MissingPersonReportMenu missingPersonReportMenu = new MissingPersonReportMenu(scanner, missingPersonReportService);
 
    public void run() {
        while (true) {
@@ -36,7 +39,7 @@ public class ConsoleApplication {
            System.out.println("1. Persons");
            System.out.println("2. Emergency events");
            System.out.println("3. Shelters");
-           System.out.println("4. Evacuations");
+           System.out.println("4. Evacuation records");
            System.out.println("5. Accommodations");
            System.out.println("6. Missing person reports");
            System.out.println("0. Exit");
@@ -68,10 +71,10 @@ public class ConsoleApplication {
                        accommodationMenu.show();
                        break;
                    case 6:
-                       System.out.println("Missing person reports selected");
+                       missingPersonReportMenu.show();
                        break;
                    default:
-                       System.out.println("Invalid option");
+                       System.out.println("Invalid option..");
                }
            } catch(InputMismatchException e) {
                System.out.println("Invalid input. Please enter a number.");

@@ -5,6 +5,7 @@ import model.enums.MissingPersonStatus;
 import repository.MissingPersonReportRepository;
 
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,10 +58,21 @@ public class MissingPersonReportService {
         if(report.getReportedDatetime() != null && report.getResolvedDatetime() != null && report.getResolvedDatetime().isBefore(report.getReportedDatetime())) {
             throw new IllegalArgumentException("Resolved datetime cannot be before reported datetime");
         }
+
+        if (report.getResolvedDatetime() != null
+                && report.getResolvedDatetime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException(
+                    "Resolved datetime cannot be in the future"
+            );
+        }
     }
 
     public MissingPersonReport registerMissingPersonReport(MissingPersonReport report) throws SQLException{
         validateMissingPersonReport(report);
+
+        if (report.getLastSeenDatetime() != null && report.getLastSeenDatetime().isAfter(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Last seen datetime cannot be in the future");
+        }
 
         if (report.getStatus() != MissingPersonStatus.MISSING) {
             throw new IllegalArgumentException("New missing person report must have MISSING status");
