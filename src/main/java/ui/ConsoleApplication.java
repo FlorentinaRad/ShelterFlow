@@ -1,13 +1,7 @@
 package ui;
 
-import repository.EmergencyEventRepository;
-import repository.EvacuationRecordRepository;
-import repository.PersonRepository;
-import repository.ShelterRepository;
-import service.EmergencyEventService;
-import service.EvacuationRecordService;
-import service.PersonService;
-import service.ShelterService;
+import repository.*;
+import service.*;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -30,6 +24,11 @@ public class ConsoleApplication {
    private final EvacuationRecordRepository evacuationRecordRepository = new EvacuationRecordRepository();
    private final EvacuationRecordService evacuationRecordService = new EvacuationRecordService(evacuationRecordRepository, personService, emergencyEventService);
    private final EvacuationRecordMenu evacuationRecordMenu = new EvacuationRecordMenu(scanner, evacuationRecordService);
+
+   private final AccommodationRepository accommodationRepository = new AccommodationRepository();
+   private final AccommodationService accommodationService = new AccommodationService(accommodationRepository, evacuationRecordService, shelterService);
+   private final AccommodationMenu accommodationMenu = new AccommodationMenu(scanner, accommodationService);
+
 
    public void run() {
        while (true) {
@@ -66,7 +65,7 @@ public class ConsoleApplication {
                        evacuationRecordMenu.show();
                        break;
                    case 5:
-                       System.out.println("Accommodations selected");
+                       accommodationMenu.show();
                        break;
                    case 6:
                        System.out.println("Missing person reports selected");
