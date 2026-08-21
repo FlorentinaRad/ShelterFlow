@@ -1,9 +1,11 @@
 package ui;
 
 import repository.EmergencyEventRepository;
+import repository.EvacuationRecordRepository;
 import repository.PersonRepository;
 import repository.ShelterRepository;
 import service.EmergencyEventService;
+import service.EvacuationRecordService;
 import service.PersonService;
 import service.ShelterService;
 
@@ -24,6 +26,10 @@ public class ConsoleApplication {
    private final ShelterRepository shelterRepository = new ShelterRepository();
    private final ShelterService shelterService = new ShelterService(shelterRepository);
    private final ShelterMenu shelterMenu = new ShelterMenu(scanner, shelterService);
+
+   private final EvacuationRecordRepository evacuationRecordRepository = new EvacuationRecordRepository();
+   private final EvacuationRecordService evacuationRecordService = new EvacuationRecordService(evacuationRecordRepository, personService, emergencyEventService);
+   private final EvacuationRecordMenu evacuationRecordMenu = new EvacuationRecordMenu(scanner, evacuationRecordService);
 
    public void run() {
        while (true) {
@@ -57,7 +63,7 @@ public class ConsoleApplication {
                        shelterMenu.show();
                        break;
                    case 4:
-                       System.out.println("Evacuations selected");
+                       evacuationRecordMenu.show();
                        break;
                    case 5:
                        System.out.println("Accommodations selected");
