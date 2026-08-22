@@ -138,6 +138,18 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" + "personId=" + personId + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\'' + ", birthDate=" + birthDate + ", phoneNumber='" + phoneNumber + '\'' + ", email='" + email + '\'' + ", homeCountry='" + homeCountry + '\'' + ", homeCounty='" + homeCounty + '\'' + ", homeLocality='" + homeLocality + '\'' + ", homeAddress='" + homeAddress + '\'' + ", notes='" + notes + '\'' + '}';
+        return "Person{" +
+                "\n personId=" + personId +
+                "\n firstName='" + firstName + '\'' +
+                "\n lastName='" + lastName + '\'' +
+                "\n birthDate=" + birthDate +
+                "\n phoneNumber='" + phoneNumber + '\'' +
+                "\n email='" + email + '\'' +
+                "\n homeCountry='" + homeCountry + '\'' +
+                "\n homeCounty='" + homeCounty + '\'' +
+                "\n homeLocality='" + homeLocality + '\'' +
+                "\n homeAddress='" + homeAddress + '\'' +
+                "\n notes='" + notes + '\'' +
+                "\n}";
     }
 }

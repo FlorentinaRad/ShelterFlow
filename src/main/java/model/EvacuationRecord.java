@@ -105,14 +105,14 @@ public class EvacuationRecord {
     @Override
     public String toString() {
         return "EvacuationRecord{" +
-                "evacuationId=" + evacuationId +
-                ", personId=" + personId +
-                ", eventId=" + eventId +
-                ", registrationDatetime=" + registrationDatetime +
-                ", evacuationLocation='" + evacuationLocation + '\'' +
-                ", needsAssistance=" + needsAssistance +
-                ", assistanceDetails='" + assistanceDetails + '\'' +
-                ", notes='" + notes + '\'' +
-                '}';
+                "\n evacuationId=" + evacuationId +
+                "\n personId=" + personId +
+                "\n eventId=" + eventId +
+                "\n registrationDatetime=" + registrationDatetime +
+                "\n evacuationLocation='" + evacuationLocation + '\'' +
+                "\n needsAssistance=" + needsAssistance +
+                "\n assistanceDetails='" + assistanceDetails + '\'' +
+                "\n notes='" + notes + '\'' +
+                "\n}";
     }
 }

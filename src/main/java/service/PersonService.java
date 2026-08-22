@@ -15,7 +15,7 @@ public class PersonService {
         this.personRepository = personRepository;
     }
 
-    private void validatePerson(Person person){
+    private void validatePerson(Person person) {
         if (person == null) {
             throw new IllegalArgumentException("Person cannot be null");
         }
@@ -28,7 +28,7 @@ public class PersonService {
             throw new IllegalArgumentException("Last name cannot be null or empty");
         }
 
-        if(person.getBirthDate() != null && person.getBirthDate().isAfter(LocalDate.now())) {
+        if (person.getBirthDate() != null && person.getBirthDate().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Birth date cannot be in the future");
         }
     }
@@ -39,13 +39,13 @@ public class PersonService {
     }
 
     public Person requirePersonById(Integer personId) throws SQLException {
-        if(personId == null || personId <= 0) {
+        if (personId == null || personId <= 0) {
             throw new IllegalArgumentException("Person ID must be a positive integer");
         }
 
         Optional<Person> person = personRepository.findById(personId);
 
-        if(person.isEmpty()) {
+        if (person.isEmpty()) {
             throw new IllegalArgumentException("Person with ID " + personId + " does not exist");
         }
 

@@ -20,43 +20,43 @@ public class EmergencyEventService {
             throw new IllegalArgumentException("Emergency event cannot be null");
         }
 
-        if(emergencyEvent.getName() == null || emergencyEvent.getName().isBlank()) {
+        if (emergencyEvent.getName() == null || emergencyEvent.getName().isBlank()) {
             throw new IllegalArgumentException("Emergency event name cannot be null or empty");
         }
 
-        if(emergencyEvent.getType() == null) {
+        if (emergencyEvent.getType() == null) {
             throw new IllegalArgumentException("Emergency event type cannot be null");
         }
 
-        if(emergencyEvent.getCountry() == null || emergencyEvent.getCountry().isBlank()) {
+        if (emergencyEvent.getCountry() == null || emergencyEvent.getCountry().isBlank()) {
             throw new IllegalArgumentException("Emergency event country cannot be null or empty");
         }
 
-        if(emergencyEvent.getCounty() == null || emergencyEvent.getCounty().isBlank()) {
+        if (emergencyEvent.getCounty() == null || emergencyEvent.getCounty().isBlank()) {
             throw new IllegalArgumentException("Emergency event county cannot be null or empty");
         }
 
-        if(emergencyEvent.getStartDatetime() == null) {
+        if (emergencyEvent.getStartDatetime() == null) {
             throw new IllegalArgumentException("Emergency event start datetime cannot be null");
         }
 
-        if(emergencyEvent.getEndDatetime() != null && emergencyEvent.getEndDatetime().isBefore(emergencyEvent.getStartDatetime())) {
+        if (emergencyEvent.getEndDatetime() != null && emergencyEvent.getEndDatetime().isBefore(emergencyEvent.getStartDatetime())) {
             throw new IllegalArgumentException("Emergency event end datetime cannot be before start datetime");
         }
 
-        if(emergencyEvent.getStatus() == null) {
+        if (emergencyEvent.getStatus() == null) {
             throw new IllegalArgumentException("Emergency event status cannot be null");
         }
 
-        if(emergencyEvent.getStatus() == EmergencyStatus.CLOSED && emergencyEvent.getEndDatetime() == null) {
+        if (emergencyEvent.getStatus() == EmergencyStatus.CLOSED && emergencyEvent.getEndDatetime() == null) {
             throw new IllegalArgumentException("Closed emergency event must have an end datetime");
         }
 
-        if(emergencyEvent.getStatus() == EmergencyStatus.ACTIVE && emergencyEvent.getEndDatetime() != null) {
+        if (emergencyEvent.getStatus() == EmergencyStatus.ACTIVE && emergencyEvent.getEndDatetime() != null) {
             throw new IllegalArgumentException("Active emergency event cannot have an end datetime");
         }
 
-        if(emergencyEvent.getEstimatedAffectedPeople()!= null && emergencyEvent.getEstimatedAffectedPeople() < 0) {
+        if (emergencyEvent.getEstimatedAffectedPeople() != null && emergencyEvent.getEstimatedAffectedPeople() < 0) {
             throw new IllegalArgumentException("Estimated affected people cannot be negative");
         }
     }

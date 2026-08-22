@@ -186,21 +186,21 @@ public class Shelter {
     @Override
     public String toString() {
         return "Shelter{" +
-                "shelterId=" + shelterId +
-                ", name='" + name + '\'' +
-                ", country='" + country + '\'' +
-                ", county='" + county + '\'' +
-                ", locality='" + locality + '\'' +
-                ", address='" + address + '\'' +
-                ", totalCapacity=" + totalCapacity +
-                ", status=" + status +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", accessRamp=" + accessRamp +
-                ", childrenArea=" + childrenArea +
-                ", medicalRoom=" + medicalRoom +
-                ", acceptsPets=" + acceptsPets +
-                ", publicInformation='" + publicInformation + '\'' +
-                '}';
+                "\n shelterId=" + shelterId +
+                "\n name='" + name + '\'' +
+                "\n country='" + country + '\'' +
+                "\n county='" + county + '\'' +
+                "\n locality='" + locality + '\'' +
+                "\n address='" + address + '\'' +
+                "\n totalCapacity=" + totalCapacity +
+                "\n status=" + status +
+                "\n phoneNumber='" + phoneNumber + '\'' +
+                "\n email='" + email + '\'' +
+                "\n accessRamp=" + accessRamp +
+                "\n childrenArea=" + childrenArea +
+                "\n medicalRoom=" + medicalRoom +
+                "\n acceptsPets=" + acceptsPets +
+                "\n publicInformation='" + publicInformation + '\'' +
+                "\n}";
     }
 }

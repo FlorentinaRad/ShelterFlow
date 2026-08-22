@@ -35,18 +35,13 @@ public class PersonRepository {
     public Person save(Person person) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-
-                PreparedStatement statement = connection.prepareStatement(
-                        INSERT_PERSON_SQL,
-                        Statement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement statement = connection.prepareStatement(INSERT_PERSON_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, person.getFirstName());
             statement.setString(2, person.getLastName());
 
             if (person.getBirthDate() != null) {
-                statement.setDate(3, Date.valueOf(person.getBirthDate())
-                );
+                statement.setDate(3, Date.valueOf(person.getBirthDate()));
             } else {
                 statement.setNull(3, Types.DATE);
             }
@@ -62,9 +57,7 @@ public class PersonRepository {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException(
-                        "Creating person failed, no rows affected."
-                );
+                throw new SQLException("Creating person failed, no rows affected.");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -72,10 +65,7 @@ public class PersonRepository {
                     person.setPersonId(generatedKeys.getInt(1));
                     return person;
                 }
-
-                throw new SQLException(
-                        "Creating person failed, no ID obtained."
-                );
+                throw new SQLException("Creating person failed, no ID obtained.");
             }
         }
     }
@@ -118,7 +108,6 @@ public class PersonRepository {
                             resultSet.getString("home_address"),
                             resultSet.getString("notes")
                     );
-
                     return Optional.of(person);
                 }
                 return Optional.empty();
@@ -146,23 +135,23 @@ public class PersonRepository {
         List<Person> persons = new ArrayList<>();
 
         try (
-            Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(FIND_ALL_SQL);
-            ResultSet resultSet = statement.executeQuery()
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL_SQL);
+                ResultSet resultSet = statement.executeQuery()
         ) {
             while (resultSet.next()) {
                 Person person = new Person(
-                    resultSet.getInt("person_id"),
-                    resultSet.getString("first_name"),
-                    resultSet.getString("last_name"),
-                    resultSet.getDate("birth_date") != null ? resultSet.getDate("birth_date").toLocalDate() : null,
-                    resultSet.getString("phone_number"),
-                    resultSet.getString("email"),
-                    resultSet.getString("home_country"),
-                    resultSet.getString("home_county"),
-                    resultSet.getString("home_locality"),
-                    resultSet.getString("home_address"),
-                    resultSet.getString("notes")
+                        resultSet.getInt("person_id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getDate("birth_date") != null ? resultSet.getDate("birth_date").toLocalDate() : null,
+                        resultSet.getString("phone_number"),
+                        resultSet.getString("email"),
+                        resultSet.getString("home_country"),
+                        resultSet.getString("home_county"),
+                        resultSet.getString("home_locality"),
+                        resultSet.getString("home_address"),
+                        resultSet.getString("notes")
                 );
                 persons.add(person);
             }
@@ -170,7 +159,7 @@ public class PersonRepository {
         }
     }
 
-    private static final String UPDATE_PERSON__SQL = """
+    private static final String UPDATE_PERSON_SQL = """
             UPDATE persons
             SET
                 first_name = ?,
@@ -188,8 +177,8 @@ public class PersonRepository {
 
     public boolean update(Person person) throws SQLException {
         try (
-            Connection connection = DatabaseConnection.getConnection();
-            PreparedStatement statement = connection.prepareStatement(UPDATE_PERSON__SQL)
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE_PERSON_SQL)
         ) {
             statement.setString(1, person.getFirstName());
             statement.setString(2, person.getLastName());
@@ -216,9 +205,9 @@ public class PersonRepository {
     }
 
     private static final String DELETE_PERSON_SQL = """
-        DELETE FROM persons
-        WHERE person_id = ?
-        """;
+            DELETE FROM persons
+            WHERE person_id = ?
+            """;
 
     public boolean delete(int personId) throws SQLException {
         try (

@@ -35,6 +35,7 @@ public class ConsoleApplication {
 
    public void run() {
        while (true) {
+           System.out.println();
            System.out.println("ShelterFlow");
            System.out.println("1. Persons");
            System.out.println("2. Emergency events");
@@ -45,7 +46,8 @@ public class ConsoleApplication {
            System.out.println("0. Exit");
 
            try {
-               System.out.println("Choose an option: ");
+               System.out.println();
+               System.out.print("Choose an option: ");
                int option = scanner.nextInt();
                scanner.nextLine();
 
@@ -74,9 +76,9 @@ public class ConsoleApplication {
                        missingPersonReportMenu.show();
                        break;
                    default:
-                       System.out.println("Invalid option..");
+                       System.out.println("Invalid option.");
                }
-           } catch(InputMismatchException e) {
+           } catch (InputMismatchException e) {
                System.out.println("Invalid input. Please enter a number.");
                scanner.nextLine();
            }

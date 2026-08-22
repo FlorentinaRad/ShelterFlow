@@ -82,12 +82,12 @@ public class Accommodation {
     @Override
     public String toString() {
         return "Accommodation{" +
-                "accommodationId=" + accommodationId +
-                ", evacuationId=" + evacuationId +
-                ", shelterId=" + shelterId +
-                ", checkInDatetime=" + checkInDatetime +
-                ", checkOutDatetime=" + checkOutDatetime +
-                ", notes='" + notes + '\'' +
-                '}';
+                "\n accommodationId=" + accommodationId +
+                "\n evacuationId=" + evacuationId +
+                "\n shelterId=" + shelterId +
+                "\n checkInDatetime=" + checkInDatetime +
+                "\n checkOutDatetime=" + checkOutDatetime +
+                "\n notes='" + notes + '\'' +
+                "\n}";
     }
 }

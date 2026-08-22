@@ -27,17 +27,13 @@ public class MissingPersonReportRepository {
     public MissingPersonReport save(MissingPersonReport report) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        INSERT_MISSING_PERSON_REPORT_SQL,
-                        Statement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement statement = connection.prepareStatement(INSERT_MISSING_PERSON_REPORT_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setInt(1, report.getPersonId());
             statement.setInt(2, report.getEventId());
 
             if (report.getLastSeenDatetime() != null) {
-                statement.setTimestamp(3, Timestamp.valueOf(report.getLastSeenDatetime())
-                );
+                statement.setTimestamp(3, Timestamp.valueOf(report.getLastSeenDatetime()));
             } else {
                 statement.setNull(3, Types.TIMESTAMP);
             }
@@ -66,21 +62,21 @@ public class MissingPersonReportRepository {
     }
 
     private static final String FIND_BY_ID_SQL = """
-        SELECT
-            report_id,
-            person_id,
-            event_id,
-            reported_datetime,
-            last_seen_datetime,
-            last_known_location,
-            reported_by_name,
-            reported_by_phone,
-            status,
-            resolved_datetime,
-            notes
-        FROM missing_person_reports
-        WHERE report_id = ?
-        """;
+            SELECT
+                report_id,
+                person_id,
+                event_id,
+                reported_datetime,
+                last_seen_datetime,
+                last_known_location,
+                reported_by_name,
+                reported_by_phone,
+                status,
+                resolved_datetime,
+                notes
+            FROM missing_person_reports
+            WHERE report_id = ?
+            """;
 
     public Optional<MissingPersonReport> findById(int reportId) throws SQLException {
         try (
@@ -107,7 +103,6 @@ public class MissingPersonReportRepository {
 
                     return Optional.of(report);
                 }
-
                 return Optional.empty();
             }
         }
@@ -115,19 +110,19 @@ public class MissingPersonReportRepository {
 
     private static final String FIND_ALL_SQL = """
             SELECT
-            report_id,
-            person_id,
-            event_id,
-            reported_datetime,
-            last_seen_datetime,
-            last_known_location,
-            reported_by_name,
-            reported_by_phone,
-            status,
-            resolved_datetime,
-            notes
-        FROM missing_person_reports
-        """;
+                report_id,
+                person_id,
+                event_id,
+                reported_datetime,
+                last_seen_datetime,
+                last_known_location,
+                reported_by_name,
+                reported_by_phone,
+                status,
+                resolved_datetime,
+                notes
+            FROM missing_person_reports
+            """;
 
     public List<MissingPersonReport> findAll() throws SQLException {
         List<MissingPersonReport> reports = new ArrayList<>();
@@ -158,19 +153,19 @@ public class MissingPersonReportRepository {
     }
 
     private static final String UPDATE_MISSING_PERSON_REPORT_SQL = """
-        UPDATE missing_person_reports
-        SET
-            person_id = ?,
-            event_id = ?,
-            last_seen_datetime = ?,
-            last_known_location = ?,
-            reported_by_name = ?,
-            reported_by_phone = ?,
-            status = ?,
-            resolved_datetime = ?,
-            notes = ?
-        WHERE report_id = ?
-        """;
+            UPDATE missing_person_reports
+            SET
+                person_id = ?,
+                event_id = ?,
+                last_seen_datetime = ?,
+                last_known_location = ?,
+                reported_by_name = ?,
+                reported_by_phone = ?,
+                status = ?,
+                resolved_datetime = ?,
+                notes = ?
+            WHERE report_id = ?
+            """;
 
     public boolean update(MissingPersonReport report) throws SQLException {
         try (
@@ -181,8 +176,7 @@ public class MissingPersonReportRepository {
             statement.setInt(2, report.getEventId());
 
             if (report.getLastSeenDatetime() != null) {
-                statement.setTimestamp(3, Timestamp.valueOf(report.getLastSeenDatetime())
-                );
+                statement.setTimestamp(3, Timestamp.valueOf(report.getLastSeenDatetime()));
             } else {
                 statement.setNull(3, Types.TIMESTAMP);
             }
@@ -193,10 +187,7 @@ public class MissingPersonReportRepository {
             statement.setString(7, report.getStatus().name());
 
             if (report.getResolvedDatetime() != null) {
-                statement.setTimestamp(
-                        8,
-                        Timestamp.valueOf(report.getResolvedDatetime())
-                );
+                statement.setTimestamp(8, Timestamp.valueOf(report.getResolvedDatetime()));
             } else {
                 statement.setNull(8, Types.TIMESTAMP);
             }
@@ -210,9 +201,9 @@ public class MissingPersonReportRepository {
     }
 
     private static final String DELETE_MISSING_PERSON_REPORT_SQL = """
-        DELETE FROM missing_person_reports
-        WHERE report_id = ?
-        """;
+            DELETE FROM missing_person_reports
+            WHERE report_id = ?
+            """;
 
     public boolean delete(Integer reportId) throws SQLException {
         try (
@@ -227,43 +218,45 @@ public class MissingPersonReportRepository {
     }
 
     private static final String FIND_BY_PERSON_AND_EVENT_SQL = """
-        SELECT report_id,
-               person_id,
-               event_id,
-               reported_datetime,
-               last_seen_datetime,
-               last_known_location,
-               reported_by_name,
-               reported_by_phone,
-               status,
-               resolved_datetime,
-               notes
-        FROM missing_person_reports
-        WHERE person_id = ?
-          AND event_id = ?
-        """;
+            SELECT 
+                report_id,
+                person_id,
+                event_id,
+                reported_datetime,
+                last_seen_datetime,
+                last_known_location,
+                reported_by_name,
+                reported_by_phone,
+                status,
+                resolved_datetime,
+                notes
+            FROM missing_person_reports
+            WHERE person_id = ?
+            AND event_id = ?
+            """;
     public Optional<MissingPersonReport> findByPersonIdAndEventId(Integer personId, Integer eventId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement statement = connection.prepareStatement(FIND_BY_PERSON_AND_EVENT_SQL)) {
-
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_PERSON_AND_EVENT_SQL)
+        ) {
             statement.setInt(1, personId);
             statement.setInt(2, eventId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    MissingPersonReport report =
-                            new MissingPersonReport(
-                                    resultSet.getInt("report_id"),
-                                    resultSet.getInt("person_id"),
-                                    resultSet.getInt("event_id"),
-                                    resultSet.getTimestamp("reported_datetime").toLocalDateTime(),
-                                    resultSet.getTimestamp("last_seen_datetime") == null ? null : resultSet.getTimestamp("last_seen_datetime").toLocalDateTime(),
-                                    resultSet.getString("last_known_location"),
-                                    resultSet.getString("reported_by_name"),
-                                    resultSet.getString("reported_by_phone"),
-                                    MissingPersonStatus.valueOf(resultSet.getString("status")),
-                                    resultSet.getTimestamp("resolved_datetime") == null ? null : resultSet.getTimestamp("resolved_datetime").toLocalDateTime(),
-                                    resultSet.getString("notes")
-                            );
+                    MissingPersonReport report = new MissingPersonReport(
+                            resultSet.getInt("report_id"),
+                            resultSet.getInt("person_id"),
+                            resultSet.getInt("event_id"),
+                            resultSet.getTimestamp("reported_datetime").toLocalDateTime(),
+                            resultSet.getTimestamp("last_seen_datetime") == null ? null : resultSet.getTimestamp("last_seen_datetime").toLocalDateTime(),
+                            resultSet.getString("last_known_location"),
+                            resultSet.getString("reported_by_name"),
+                            resultSet.getString("reported_by_phone"),
+                            MissingPersonStatus.valueOf(resultSet.getString("status")),
+                            resultSet.getTimestamp("resolved_datetime") == null ? null : resultSet.getTimestamp("resolved_datetime").toLocalDateTime(),
+                            resultSet.getString("notes")
+                    );
                     return Optional.of(report);
                 }
                 return Optional.empty();

@@ -21,6 +21,7 @@ public class ShelterMenu {
 
     public void show() {
         while (true) {
+            System.out.println();
             System.out.println("Shelters");
             System.out.println("1. Register shelter");
             System.out.println("2. Find shelter by ID");
@@ -30,6 +31,7 @@ public class ShelterMenu {
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.print("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -57,7 +59,7 @@ public class ShelterMenu {
                     default:
                         System.out.println("Invalid option.");
                 }
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             }
@@ -66,7 +68,7 @@ public class ShelterMenu {
 
     private void registerShelter() {
         System.out.println();
-        System.out.println("Register Shelter");
+        System.out.println("Register shelter");
 
         System.out.println("Name: ");
         String name = scanner.nextLine().trim();
@@ -207,7 +209,7 @@ public class ShelterMenu {
                 publicInformation
         );
 
-        try{
+        try {
             shelterService.registerShelter(shelter);
             System.out.println("Shelter registered successfully.");
         } catch (IllegalArgumentException e) {
@@ -233,12 +235,13 @@ public class ShelterMenu {
     }
 
     private void listAllShelters() {
-        try{
+        try {
             List<Shelter> shelters = shelterService.listAllShelters();
-            for(Shelter shelter : shelters) {
+            for (Shelter shelter : shelters) {
                 System.out.println(shelter);
+                System.out.println();
             }
-        } catch(SQLException e) {
+        } catch (SQLException e) {
                 System.out.println(e.getMessage());
         }
     }
@@ -317,7 +320,7 @@ public class ShelterMenu {
                     }
                     break;
                 case 8:
-                    System.out.println("New phone number: ");
+                    System.out.println("New phone number (optional): ");
                     String phoneNumber = scanner.nextLine().trim();
                     if (phoneNumber.isEmpty()) {
                         phoneNumber = null;
@@ -325,7 +328,7 @@ public class ShelterMenu {
                     shelter.setPhoneNumber(phoneNumber);
                     break;
                 case 9:
-                    System.out.println("New email: ");
+                    System.out.println("New email (optional): ");
                     String email = scanner.nextLine().trim();
                     if (email.isEmpty()) {
                         email = null;
@@ -408,7 +411,7 @@ public class ShelterMenu {
                     }
                     break;
                 case 14:
-                    System.out.println("New public information");
+                    System.out.println("New public information (optional): ");
                     String publicInformation = scanner.nextLine().trim();
                     if (publicInformation.isEmpty()) {
                         publicInformation = null;

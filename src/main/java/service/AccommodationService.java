@@ -71,7 +71,7 @@ public class AccommodationService {
         return accommodation.get();
     }
 
-    public List<Accommodation> listAllAccommodation() throws SQLException {
+    public List<Accommodation> listAllAccommodations() throws SQLException {
         return accommodationRepository.findAll();
     }
 
@@ -83,11 +83,11 @@ public class AccommodationService {
 
         Accommodation existingAccommodation = requireAccommodationById(accommodation.getAccommodationId());
 
-        if(!existingAccommodation.getEvacuationId().equals(accommodation.getEvacuationId())) {
+        if (!existingAccommodation.getEvacuationId().equals(accommodation.getEvacuationId())) {
             throw new IllegalArgumentException("Evacuation record cannot be changed for an existing accommodation");
         }
 
-        if(!existingAccommodation.getShelterId().equals(accommodation.getShelterId())) {
+        if (!existingAccommodation.getShelterId().equals(accommodation.getShelterId())) {
             throw new IllegalArgumentException("Shelter cannot be changed for an existing accommodation");
         }
 
@@ -116,29 +116,29 @@ public class AccommodationService {
         }
     }
 
-    public Accommodation transferAccommodation(Integer accommodationId, Integer newShelterId) throws SQLException{
+    public Accommodation transferAccommodation(Integer accommodationId, Integer newShelterId) throws SQLException {
         Accommodation currentAccommodation = requireAccommodationById(accommodationId);
 
         if (currentAccommodation.getCheckOutDatetime() != null) {
             throw new IllegalStateException("Only an active accommodation can be transferred");
         }
 
-        if(newShelterId == null || newShelterId <= 0) {
+        if (newShelterId == null || newShelterId <= 0) {
             throw new IllegalArgumentException("New shelter ID must be a positive integer");
         }
 
-        if(currentAccommodation.getShelterId().equals(newShelterId)) {
+        if (currentAccommodation.getShelterId().equals(newShelterId)) {
             throw new IllegalArgumentException("New shelter must be different from the current shelter");
         }
 
         Shelter newShelter = shelterService.requireShelterById(newShelterId);
 
-        if(newShelter.getStatus() != ShelterStatus.OPEN) {
+        if (newShelter.getStatus() != ShelterStatus.OPEN) {
             throw new IllegalStateException("Cannot transfer a person to a closed shelter");
         }
 
         int activeAccommodationCount = accommodationRepository.countActiveByShelterId(newShelterId);
-        if(activeAccommodationCount >= newShelter.getTotalCapacity()) {
+        if (activeAccommodationCount >= newShelter.getTotalCapacity()) {
             throw new IllegalStateException("Shelter has reached its maximum capacity");
         }
 

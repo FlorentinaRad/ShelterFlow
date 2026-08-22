@@ -21,16 +21,18 @@ public class AccommodationMenu {
 
     public void show() {
         while (true) {
+            System.out.println();
             System.out.println("Accommodations");
             System.out.println("1. Register accommodation");
             System.out.println("2. Find accommodation by ID");
             System.out.println("3. List all accommodations");
             System.out.println("4. Update accommodation");
             System.out.println("5. Delete accommodation");
-            System.out.println("6. Transfer");
+            System.out.println("6. Transfer accommodation");
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.print("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -61,7 +63,7 @@ public class AccommodationMenu {
                     default:
                         System.out.println("Invalid option.");
                 }
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             } catch (DateTimeException e) {
@@ -74,7 +76,7 @@ public class AccommodationMenu {
         System.out.println();
         System.out.println("Register accommodation");
 
-        System.out.println("Evacuation ID: ");
+        System.out.println("Evacuation record ID: ");
         int evacuationId = scanner.nextInt();
         scanner.nextLine();
 
@@ -84,7 +86,7 @@ public class AccommodationMenu {
 
         System.out.println("Notes (optional): ");
         String notes = scanner.nextLine().trim();
-        if(notes.isEmpty()) {
+        if (notes.isEmpty()) {
             notes = null;
         }
 
@@ -94,15 +96,14 @@ public class AccommodationMenu {
                 notes
         );
 
-        try{
+        try {
             accommodationService.registerAccommodation(accommodation);
             System.out.println("Accommodation registered successfully.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-        catch (IllegalStateException e) {
+        } catch (IllegalStateException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -112,7 +113,7 @@ public class AccommodationMenu {
         int accommodationId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             Accommodation accommodation = accommodationService.requireAccommodationById(accommodationId);
             System.out.println(accommodation);
         } catch (IllegalArgumentException e) {
@@ -123,22 +124,23 @@ public class AccommodationMenu {
     }
 
     private void listAllAccommodations() {
-        try{
-            List<Accommodation> accommodations = accommodationService.listAllAccommodation();
+        try {
+            List<Accommodation> accommodations = accommodationService.listAllAccommodations();
             for (Accommodation accommodation : accommodations) {
                 System.out.println(accommodation);
+                System.out.println();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    private void updateAccommodation(){
+    private void updateAccommodation() {
         System.out.println("Accommodation ID: ");
         int accommodationId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             Accommodation accommodation = accommodationService.requireAccommodationById(accommodationId);
             System.out.println("1. Check-out datetime");
             System.out.println("2. Notes");
@@ -165,7 +167,7 @@ public class AccommodationMenu {
                     accommodation.setCheckOutDatetime(checkOut);
                     break;
                 case 2:
-                    System.out.println("New notes: ");
+                    System.out.println("New notes (optional): ");
                     String notes = scanner.nextLine().trim();
                     if (notes.isEmpty()) {
                         notes = null;
@@ -192,7 +194,7 @@ public class AccommodationMenu {
         int accommodationId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             accommodationService.deleteAccommodation(accommodationId);
             System.out.println("Accommodation deleted successfully.");
         } catch (IllegalArgumentException e) {

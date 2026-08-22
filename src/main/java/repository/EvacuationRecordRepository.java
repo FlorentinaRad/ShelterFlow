@@ -24,10 +24,7 @@ public class EvacuationRecordRepository {
     public EvacuationRecord save(EvacuationRecord record) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        INSERT_EVACUATION_RECORD_SQL,
-                        Statement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement statement = connection.prepareStatement(INSERT_EVACUATION_RECORD_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setInt(1, record.getPersonId());
             statement.setInt(2, record.getEventId());
@@ -49,25 +46,24 @@ public class EvacuationRecordRepository {
                     record.setEvacuationId(generatedKeys.getInt(1));
                     return record;
                 }
-
                 throw new SQLException("Creating evacuation record failed, no ID obtained.");
             }
         }
     }
 
     private static final String FIND_BY_ID_SQL = """
-        SELECT
-            evacuation_id,
-            person_id,
-            event_id,
-            registration_datetime,
-            evacuation_location,
-            needs_assistance,
-            assistance_details,
-            notes
-        FROM evacuation_records
-        WHERE evacuation_id = ?
-        """;
+            SELECT
+                evacuation_id,
+                person_id,
+                event_id,
+                registration_datetime,
+                evacuation_location,
+                needs_assistance,
+                assistance_details,
+                notes
+            FROM evacuation_records
+            WHERE evacuation_id = ?
+            """;
 
     public Optional<EvacuationRecord> findById(int evacuationId) throws SQLException {
         try (
@@ -87,7 +83,6 @@ public class EvacuationRecordRepository {
                             resultSet.getString("assistance_details"),
                             resultSet.getString("notes")
                     );
-                    record.setEvacuationId(resultSet.getInt("evacuation_id"));
                     return Optional.of(record);
                 } else {
                     return Optional.empty();
@@ -97,17 +92,17 @@ public class EvacuationRecordRepository {
     }
 
     private static final String FIND_ALL_SQL = """
-        SELECT
-            evacuation_id,
-            person_id,
-            event_id,
-            registration_datetime,
-            evacuation_location,
-            needs_assistance,
-            assistance_details,
-            notes
-        FROM evacuation_records
-        """;
+            SELECT
+                evacuation_id,
+                person_id,
+                event_id,
+                registration_datetime,
+                evacuation_location,
+                needs_assistance,
+                assistance_details,
+                notes
+            FROM evacuation_records
+            """;
 
     public List<EvacuationRecord> findAll() throws SQLException {
         List<EvacuationRecord> records = new ArrayList<>();
@@ -115,7 +110,7 @@ public class EvacuationRecordRepository {
         try (
             Connection connection = DatabaseConnection.getConnection();
             PreparedStatement statement = connection.prepareStatement(FIND_ALL_SQL);
-            ResultSet resultSet = statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery()
         ) {
             while (resultSet.next()) {
                 EvacuationRecord record = new EvacuationRecord(
@@ -135,16 +130,16 @@ public class EvacuationRecordRepository {
     }
 
     private static final String UPDATE_EVACUATION_RECORD_SQL = """
-        UPDATE evacuation_records
-        SET
-            person_id = ?,
-            event_id = ?,
-            evacuation_location = ?,
-            needs_assistance = ?,
-            assistance_details = ?,
-            notes = ?
-        WHERE evacuation_id = ?
-        """;
+            UPDATE evacuation_records
+            SET
+                person_id = ?,
+                event_id = ?,
+                evacuation_location = ?,
+                needs_assistance = ?,
+                assistance_details = ?,
+                notes = ?
+            WHERE evacuation_id = ?
+            """;
 
     public boolean update(EvacuationRecord record) throws SQLException {
         try (
@@ -165,15 +160,14 @@ public class EvacuationRecordRepository {
     }
 
     private static final String DELETE_EVACUATION_RECORD_SQL = """
-        DELETE FROM evacuation_records
-        WHERE evacuation_id = ?
-        """;
+            DELETE FROM evacuation_records
+            WHERE evacuation_id = ?
+            """;
 
     public boolean delete(Integer evacuationId) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement =
-                        connection.prepareStatement(DELETE_EVACUATION_RECORD_SQL)
+                PreparedStatement statement = connection.prepareStatement(DELETE_EVACUATION_RECORD_SQL)
         ) {
             statement.setInt(1, evacuationId);
 
@@ -183,29 +177,30 @@ public class EvacuationRecordRepository {
     }
 
     private static final String FIND_BY_PERSON_AND_EVENT_SQL = """
-        SELECT evacuation_id,
-               person_id,
-               event_id,
-               registration_datetime,
-               evacuation_location,
-               needs_assistance,
-               assistance_details,
-               notes
-        FROM evacuation_records
-        WHERE person_id = ?
-          AND event_id = ?
-        """;
+            SELECT 
+                evacuation_id,
+                person_id,
+                event_id,
+                registration_datetime,
+                evacuation_location,
+                needs_assistance,
+                assistance_details,
+                notes
+            FROM evacuation_records
+            WHERE person_id = ?
+            AND event_id = ?
+            """;
 
-    public Optional<EvacuationRecord> findByPersonIdAndEventId(Integer personId, Integer eventId) throws SQLException{
+    public Optional<EvacuationRecord> findByPersonIdAndEventId(Integer personId, Integer eventId) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
                 PreparedStatement statement = connection.prepareStatement(FIND_BY_PERSON_AND_EVENT_SQL)
-                ) {
+        ) {
             statement.setInt(1, personId);
             statement.setInt(2, eventId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
-                if(resultSet.next()) {
+                if (resultSet.next()) {
                     EvacuationRecord evacuationRecord = new EvacuationRecord(
                             resultSet.getInt("evacuation_id"),
                             resultSet.getInt("person_id"),

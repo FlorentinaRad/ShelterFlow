@@ -22,6 +22,7 @@ public class MissingPersonReportMenu {
 
     public void show() {
         while (true) {
+            System.out.println();
             System.out.println("Missing person reports");
             System.out.println("1. Register missing person report");
             System.out.println("2. Find missing person report by ID");
@@ -31,6 +32,7 @@ public class MissingPersonReportMenu {
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.print("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -58,7 +60,7 @@ public class MissingPersonReportMenu {
                     default:
                         System.out.println("Invalid option.");
                 }
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             } catch (DateTimeException e) {
@@ -69,7 +71,7 @@ public class MissingPersonReportMenu {
 
     private void registerMissingPersonReport() {
         System.out.println();
-        System.out.println("Register missing person");
+        System.out.println("Register missing person report");
 
         System.out.println("Person ID: ");
         int personId = scanner.nextInt();
@@ -85,7 +87,7 @@ public class MissingPersonReportMenu {
         int option = scanner.nextInt();
         scanner.nextLine();
 
-        LocalDateTime lastSeenDateTime;
+        LocalDateTime lastSeenDatetime;
         if (option == 1) {
             System.out.println("Year: ");
             int year = scanner.nextInt();
@@ -99,9 +101,9 @@ public class MissingPersonReportMenu {
             int minute = scanner.nextInt();
             scanner.nextLine();
 
-            lastSeenDateTime = LocalDateTime.of(year, month, day, hour, minute);
+            lastSeenDatetime = LocalDateTime.of(year, month, day, hour, minute);
         } else if (option == 2) {
-            lastSeenDateTime = null;
+            lastSeenDatetime = null;
         } else {
             System.out.println("Invalid option.");
             return;
@@ -119,26 +121,26 @@ public class MissingPersonReportMenu {
         System.out.println("Reported by phone (optional): ");
         String reportedByPhone = scanner.nextLine().trim();
         if (reportedByPhone.isEmpty()) {
-            reportedByPhone= null;
+            reportedByPhone = null;
         }
 
         System.out.println("Notes (optional): ");
         String notes = scanner.nextLine().trim();
         if (notes.isEmpty()) {
-            notes= null;
+            notes = null;
         }
 
         MissingPersonReport missingPersonReport = new MissingPersonReport(
                 personId,
                 eventId,
-                lastSeenDateTime,
+                lastSeenDatetime,
                 lastKnownLocation,
                 reportedByName,
                 reportedByPhone,
                 notes
         );
 
-        try{
+        try {
             missingPersonReportService.registerMissingPersonReport(missingPersonReport);
             System.out.println("Missing person report registered successfully.");
         } catch (IllegalArgumentException e) {
@@ -149,12 +151,12 @@ public class MissingPersonReportMenu {
     }
 
     private void findMissingPersonReportById() {
-        System.out.println("Missing person record ID: ");
-        int missingPersonId = scanner.nextInt();
+        System.out.println("Missing person report ID: ");
+        int reportId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
-            MissingPersonReport missingPersonReport = missingPersonReportService.requireMissingPersonReportById(missingPersonId);
+        try {
+            MissingPersonReport missingPersonReport = missingPersonReportService.requireMissingPersonReportById(reportId);
             System.out.println(missingPersonReport);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
@@ -164,10 +166,11 @@ public class MissingPersonReportMenu {
     }
 
     private void listAllMissingPersonReports() {
-        try{
+        try {
             List<MissingPersonReport> missingPersonReports = missingPersonReportService.listAllMissingPersonReports();
             for (MissingPersonReport missingPersonReport : missingPersonReports) {
                 System.out.println(missingPersonReport);
+                System.out.println();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -175,12 +178,12 @@ public class MissingPersonReportMenu {
     }
 
     private void updateMissingPersonReport() {
-        System.out.println("Missing Person Report ID: ");
-        int missingPersonReportId = scanner.nextInt();
+        System.out.println("Missing person report ID: ");
+        int reportId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
-            MissingPersonReport missingPersonReport = missingPersonReportService.requireMissingPersonReportById(missingPersonReportId);
+        try {
+            MissingPersonReport missingPersonReport = missingPersonReportService.requireMissingPersonReportById(reportId);
             System.out.println("1. Last seen datetime");
             System.out.println("2. Last known location");
             System.out.println("3. Reported by name");
@@ -194,13 +197,13 @@ public class MissingPersonReportMenu {
 
             switch (option) {
                 case 1:
-                    System.out.println("New last seen datetime: ");
+                    System.out.println("Last seen datetime known?");
                     System.out.println("1. Yes");
                     System.out.println("2. No");
-                    int lastSeenDateTime = scanner.nextInt();
+                    int lastSeenOption = scanner.nextInt();
                     scanner.nextLine();
 
-                    if(lastSeenDateTime == 1) {
+                    if (lastSeenOption == 1) {
                         System.out.println("Year: ");
                         int year = scanner.nextInt();
                         System.out.println("Month: ");
@@ -216,7 +219,7 @@ public class MissingPersonReportMenu {
                         LocalDateTime lastSeenDatetime = LocalDateTime.of(year, month, day, hour, minute);
                         missingPersonReport.setLastSeenDatetime(lastSeenDatetime);
 
-                    } else if (lastSeenDateTime == 2) {
+                    } else if (lastSeenOption == 2) {
                         missingPersonReport.setLastSeenDatetime(null);
                     } else {
                         System.out.println("Invalid option.");
@@ -255,7 +258,7 @@ public class MissingPersonReportMenu {
                     int statusOption = scanner.nextInt();
                     scanner.nextLine();
 
-                    if(statusOption == 1) {
+                    if (statusOption == 1) {
                         missingPersonReport.setStatus(MissingPersonStatus.MISSING);
                         missingPersonReport.setResolvedDatetime(null);
 
@@ -296,7 +299,7 @@ public class MissingPersonReportMenu {
                 case 6:
                     System.out.println("New notes (optional): ");
                     String notes = scanner.nextLine().trim();
-                    if(notes.isEmpty()) {
+                    if (notes.isEmpty()) {
                         notes = null;
                     }
                     missingPersonReport.setNotes(notes);
@@ -307,7 +310,7 @@ public class MissingPersonReportMenu {
             }
             missingPersonReportService.updateMissingPersonReport(missingPersonReport);
             System.out.println("Missing person report updated successfully.");
-        }  catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -316,11 +319,11 @@ public class MissingPersonReportMenu {
 
     private void deleteMissingPersonReport() {
         System.out.println("Missing person report ID: ");
-        int missingPersonReportId = scanner.nextInt();
+        int reportId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
-            missingPersonReportService.deleteMissingPersonReport(missingPersonReportId);
+        try {
+            missingPersonReportService.deleteMissingPersonReport(reportId);
             System.out.println("Missing person report deleted successfully.");
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());

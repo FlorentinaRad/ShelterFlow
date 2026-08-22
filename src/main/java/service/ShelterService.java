@@ -15,35 +15,35 @@ public class ShelterService {
     }
 
     private void validateShelter(Shelter shelter) {
-        if(shelter == null) {
+        if (shelter == null) {
             throw new IllegalArgumentException("Shelter cannot be null");
         }
 
-        if(shelter.getName() == null || shelter.getName().isBlank()) {
+        if (shelter.getName() == null || shelter.getName().isBlank()) {
             throw new IllegalArgumentException("Shelter name cannot be null or empty");
         }
 
-        if(shelter.getCountry() == null || shelter.getCountry().isBlank()) {
+        if (shelter.getCountry() == null || shelter.getCountry().isBlank()) {
             throw new IllegalArgumentException("Shelter country cannot be null or empty");
         }
 
-        if(shelter.getCounty() == null || shelter.getCounty().isBlank()) {
+        if (shelter.getCounty() == null || shelter.getCounty().isBlank()) {
             throw new IllegalArgumentException("Shelter county cannot be null or empty");
         }
 
-        if(shelter.getLocality() == null || shelter.getLocality().isBlank()) {
+        if (shelter.getLocality() == null || shelter.getLocality().isBlank()) {
             throw new IllegalArgumentException("Shelter locality cannot be null or empty");
         }
 
-        if(shelter.getAddress() == null || shelter.getAddress().isBlank()) {
+        if (shelter.getAddress() == null || shelter.getAddress().isBlank()) {
             throw new IllegalArgumentException("Shelter address cannot be null or empty");
         }
 
-        if(shelter.getTotalCapacity() <= 0) {
+        if (shelter.getTotalCapacity() <= 0) {
             throw new IllegalArgumentException("Shelter total capacity must be greater than zero");
         }
 
-        if(shelter.getStatus() == null) {
+        if (shelter.getStatus() == null) {
             throw new IllegalArgumentException("Shelter status cannot be null");
         }
     }

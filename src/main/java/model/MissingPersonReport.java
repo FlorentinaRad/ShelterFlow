@@ -140,17 +140,17 @@ public class MissingPersonReport {
     @Override
     public String toString() {
         return "MissingPersonReport{" +
-                "reportId=" + reportId +
-                ", personId=" + personId +
-                ", eventId=" + eventId +
-                ", reportedDatetime=" + reportedDatetime +
-                ", lastSeenDatetime=" + lastSeenDatetime +
-                ", lastKnownLocation='" + lastKnownLocation + '\'' +
-                ", reportedByName='" + reportedByName + '\'' +
-                ", reportedByPhone='" + reportedByPhone + '\'' +
-                ", status=" + status +
-                ", resolvedDatetime=" + resolvedDatetime +
-                ", notes='" + notes + '\'' +
-                '}';
+                "\n reportId=" + reportId +
+                "\n personId=" + personId +
+                "\n eventId=" + eventId +
+                "\n reportedDatetime=" + reportedDatetime +
+                "\n lastSeenDatetime=" + lastSeenDatetime +
+                "\n lastKnownLocation='" + lastKnownLocation + '\'' +
+                "\n reportedByName='" + reportedByName + '\'' +
+                "\n reportedByPhone='" + reportedByPhone + '\'' +
+                "\n status=" + status +
+                "\n resolvedDatetime=" + resolvedDatetime +
+                "\n notes='" + notes + '\'' +
+                "\n}";
     }
 }

@@ -156,18 +156,18 @@ public class EmergencyEvent {
     @Override
     public String toString() {
         return "EmergencyEvent{" +
-                "eventId=" + eventId +
-                ", name='" + name + '\'' +
-                ", type=" + type +
-                ", country='" + country + '\'' +
-                ", county='" + county + '\'' +
-                ", locality='" + locality + '\'' +
-                ", affectedArea='" + affectedArea + '\'' +
-                ", startDatetime=" + startDatetime +
-                ", endDatetime=" + endDatetime +
-                ", status=" + status +
-                ", description='" + description + '\'' +
-                ", estimatedAffectedPeople=" + estimatedAffectedPeople +
-                '}';
+                "\n eventId=" + eventId +
+                "\n name='" + name + '\'' +
+                "\n type=" + type +
+                "\n country='" + country + '\'' +
+                "\n county='" + county + '\'' +
+                "\n locality='" + locality + '\'' +
+                "\n affectedArea='" + affectedArea + '\'' +
+                "\n startDatetime=" + startDatetime +
+                "\n endDatetime=" + endDatetime +
+                "\n status=" + status +
+                "\n description='" + description + '\'' +
+                "\n estimatedAffectedPeople=" + estimatedAffectedPeople +
+                "\n}";
     }
 }

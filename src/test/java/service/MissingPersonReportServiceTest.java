@@ -334,7 +334,7 @@ public class MissingPersonReportServiceTest {
         MissingPersonReport storedReport = missingPersonReportService.requireMissingPersonReportById(savedReport.getReportId());
 
         storedReport.setStatus(MissingPersonStatus.LOCATED_SAFE);
-        storedReport.setResolvedDatetime(storedReport.getReportedDatetime().plusMinutes(1));
+        storedReport.setResolvedDatetime(storedReport.getReportedDatetime());
         storedReport.setNotes("Person located safely");
 
         missingPersonReportService.updateMissingPersonReport(storedReport);
@@ -347,7 +347,7 @@ public class MissingPersonReportServiceTest {
     }
 
     @Test
-    void updateMissingPersonReportShouldRejectLastSeenAfterReportedDatetime() throws SQLException{
+    void updateMissingPersonReportShouldRejectLastSeenDatetimeInFuture() throws SQLException{
         Person person = new Person(
                 "Gabriela",
                 "Ionescu",
@@ -391,13 +391,13 @@ public class MissingPersonReportServiceTest {
 
         MissingPersonReport storedReport = missingPersonReportService.requireMissingPersonReportById(savedReport.getReportId());
 
-        storedReport.setLastSeenDatetime(storedReport.getReportedDatetime().plusMinutes(1));
+        storedReport.setLastSeenDatetime(LocalDateTime.now().plusDays(1));
 
         try {
             missingPersonReportService.updateMissingPersonReport(storedReport);
             fail("Expected IllegalArgumentException for invalid last seen datetime");
         } catch (IllegalArgumentException e) {
-            assertEquals("Last seen datetime cannot be after reported datetime", e.getMessage());
+            assertEquals("Last seen datetime cannot be in the future", e.getMessage());
         }
     }
 

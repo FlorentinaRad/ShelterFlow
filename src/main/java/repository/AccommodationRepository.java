@@ -3,7 +3,6 @@ package repository;
 import config.DatabaseConnection;
 import model.Accommodation;
 
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,10 +22,7 @@ public class AccommodationRepository {
     public Accommodation save(Accommodation accommodation) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        INSERT_ACCOMMODATION_SQL,
-                        Statement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement statement = connection.prepareStatement(INSERT_ACCOMMODATION_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setInt(1, accommodation.getEvacuationId());
             statement.setInt(2, accommodation.getShelterId());
@@ -35,45 +31,36 @@ public class AccommodationRepository {
             int affectedRows = statement.executeUpdate();
 
             if (affectedRows == 0) {
-                throw new SQLException(
-                        "Creating accommodation failed, no rows affected."
-                );
+                throw new SQLException("Creating accommodation failed, no rows affected.");
             }
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    accommodation.setAccommodationId(
-                            generatedKeys.getInt(1)
-                    );
+                    accommodation.setAccommodationId(generatedKeys.getInt(1));
 
                     return accommodation;
                 }
-
-                throw new SQLException(
-                        "Creating accommodation failed, no ID obtained."
-                );
+                throw new SQLException("Creating accommodation failed, no ID obtained.");
             }
         }
     }
 
     private static final String FIND_BY_ID_SQL = """
-        SELECT
-            accommodation_id,
-            evacuation_id,
-            shelter_id,
-            check_in_datetime,
-            check_out_datetime,
-            notes
-        FROM accommodations
-        WHERE accommodation_id = ?
-        """;
+            SELECT
+                accommodation_id,
+                evacuation_id,
+                shelter_id,
+                check_in_datetime,
+                check_out_datetime,
+                notes
+            FROM accommodations
+            WHERE accommodation_id = ?
+            """;
 
     public Optional<Accommodation> findById(Integer accommodationId) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        FIND_BY_ID_SQL
-                )
+                PreparedStatement statement = connection.prepareStatement(FIND_BY_ID_SQL)
         ) {
             statement.setInt(1, accommodationId);
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -94,22 +81,20 @@ public class AccommodationRepository {
     }
 
     private static final String FIND_ALL_SQL = """
-        SELECT
-            accommodation_id,
-            evacuation_id,
-            shelter_id,
-            check_in_datetime,
-            check_out_datetime,
-            notes
-        FROM accommodations
-        """;
+            SELECT
+                accommodation_id,
+                evacuation_id,
+                shelter_id,
+                check_in_datetime,
+                check_out_datetime,
+                notes
+            FROM accommodations
+            """;
 
     public List<Accommodation> findAll() throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        FIND_ALL_SQL
-                );
+                PreparedStatement statement = connection.prepareStatement(FIND_ALL_SQL);
                 ResultSet resultSet = statement.executeQuery()
         ) {
             List<Accommodation> accommodations = new ArrayList<>();
@@ -129,28 +114,25 @@ public class AccommodationRepository {
     }
 
     private static final String UPDATE_ACCOMMODATION_SQL = """
-        UPDATE accommodations
-        SET
-            evacuation_id = ?,
-            shelter_id = ?,
-            check_out_datetime = ?,
-            notes = ?
-        WHERE accommodation_id = ?
-        """;
+            UPDATE accommodations
+            SET
+                evacuation_id = ?,
+                shelter_id = ?,
+                check_out_datetime = ?,
+                notes = ?
+            WHERE accommodation_id = ?
+            """;
 
     public boolean update(Accommodation accommodation) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        UPDATE_ACCOMMODATION_SQL
-                )
+                PreparedStatement statement = connection.prepareStatement(UPDATE_ACCOMMODATION_SQL)
         ) {
             statement.setInt(1, accommodation.getEvacuationId());
             statement.setInt(2, accommodation.getShelterId());
 
             if (accommodation.getCheckOutDatetime() != null) {
-                statement.setTimestamp(3, Timestamp.valueOf(accommodation.getCheckOutDatetime())
-                );
+                statement.setTimestamp(3, Timestamp.valueOf(accommodation.getCheckOutDatetime()));
             } else {
                 statement.setNull(3, Types.TIMESTAMP);
             }
@@ -164,15 +146,14 @@ public class AccommodationRepository {
     }
 
     private static final String DELETE_ACCOMMODATION_SQL = """
-        DELETE FROM accommodations
-        WHERE accommodation_id = ?
-        """;
+            DELETE FROM accommodations
+            WHERE accommodation_id = ?
+            """;
 
     public boolean delete(Integer accommodationId) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-                PreparedStatement statement = connection.prepareStatement(
-                        DELETE_ACCOMMODATION_SQL)
+                PreparedStatement statement = connection.prepareStatement(DELETE_ACCOMMODATION_SQL)
         ) {
             statement.setInt(1, accommodationId);
 
@@ -182,18 +163,26 @@ public class AccommodationRepository {
     }
 
     private static final String FIND_ACTIVE_BY_EVACUATION_ID_SQL = """
-        SELECT *
-        FROM accommodations
-        WHERE evacuation_id = ?
-          AND check_out_datetime IS NULL
-        """;
-    public Optional<Accommodation> findActiveByEvacuationId(Integer evacuationId) throws SQLException{
-        try (Connection connection = DatabaseConnection.getConnection();
-        PreparedStatement statement = connection.prepareStatement(FIND_ACTIVE_BY_EVACUATION_ID_SQL)) {
+            SELECT 
+                accommodation_id,
+                evacuation_id,
+                shelter_id,
+                check_in_datetime,
+                check_out_datetime,
+                notes
+            FROM accommodations
+            WHERE evacuation_id = ?
+            AND check_out_datetime IS NULL
+            """;
+    public Optional<Accommodation> findActiveByEvacuationId(Integer evacuationId) throws SQLException {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(FIND_ACTIVE_BY_EVACUATION_ID_SQL)
+        ) {
             statement.setInt(1, evacuationId);
 
-            try(ResultSet resultSet = statement.executeQuery()) {
-                if(resultSet.next()) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if  (resultSet.next()) {
                     Accommodation accommodation = new Accommodation(resultSet.getInt("accommodation_id"),
                             resultSet.getInt("evacuation_id"),
                             resultSet.getInt("shelter_id"),
@@ -208,14 +197,16 @@ public class AccommodationRepository {
     }
 
     private static final String COUNT_ACTIVE_BY_SHELTER_ID_SQL = """
-        SELECT COUNT(*) AS active_count
-        FROM accommodations
-        WHERE shelter_id = ?
-          AND check_out_datetime IS NULL
-        """;
+            SELECT COUNT(*) AS active_count
+            FROM accommodations
+            WHERE shelter_id = ?
+            AND check_out_datetime IS NULL
+            """;
     public int countActiveByShelterId(Integer shelterId) throws SQLException {
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement statement = connection.prepareStatement(COUNT_ACTIVE_BY_SHELTER_ID_SQL)) {
+        try (
+                Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(COUNT_ACTIVE_BY_SHELTER_ID_SQL)
+        ) {
             statement.setInt(1, shelterId);
 
             try (ResultSet resultSet = statement.executeQuery()) {

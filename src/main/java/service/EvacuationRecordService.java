@@ -46,13 +46,13 @@ public class EvacuationRecordService {
         return evacuationRecordRepository.save(evacuationRecord);
     }
 
-    public EvacuationRecord requireEvacuationRecordById(Integer evacuationRecordId) throws SQLException{
-        if(evacuationRecordId == null || evacuationRecordId <= 0) {
+    public EvacuationRecord requireEvacuationRecordById(Integer evacuationRecordId) throws SQLException {
+        if (evacuationRecordId == null || evacuationRecordId <= 0) {
             throw new IllegalArgumentException("Evacuation record ID must be a positive integer");
         }
 
         Optional<EvacuationRecord> evacuationRecord = evacuationRecordRepository.findById(evacuationRecordId);
-        if(evacuationRecord.isEmpty()) {
+        if (evacuationRecord.isEmpty()) {
             throw new IllegalArgumentException("Evacuation record with ID " + evacuationRecordId + " does not exist");
         }
         return evacuationRecord.get();
@@ -62,10 +62,10 @@ public class EvacuationRecordService {
         return evacuationRecordRepository.findAll();
     }
 
-    public EvacuationRecord updateEvacuationRecord(EvacuationRecord evacuationRecord) throws SQLException{
+    public EvacuationRecord updateEvacuationRecord(EvacuationRecord evacuationRecord) throws SQLException {
         validateEvacuationRecord(evacuationRecord);
 
-       if(evacuationRecord.getEvacuationId() == null || evacuationRecord.getEvacuationId() <= 0) {
+       if (evacuationRecord.getEvacuationId() == null || evacuationRecord.getEvacuationId() <= 0) {
            throw new IllegalArgumentException("Evacuation record ID must be a positive integer");
        }
 
@@ -73,28 +73,24 @@ public class EvacuationRecordService {
 
         Optional<EvacuationRecord> existingRecord = evacuationRecordRepository.findByPersonIdAndEventId(evacuationRecord.getPersonId(), evacuationRecord.getEventId());
 
-        if (existingRecord.isPresent() &&
-                !existingRecord.get().getEvacuationId()
-                        .equals(evacuationRecord.getEvacuationId())) {
-
-            throw new IllegalArgumentException(
-                    "Person is already registered for this emergency event"
+        if (existingRecord.isPresent() && !existingRecord.get().getEvacuationId().equals(evacuationRecord.getEvacuationId())) {
+            throw new IllegalArgumentException("Person is already registered for this emergency event"
             );
         }
 
        boolean updated = evacuationRecordRepository.update(evacuationRecord);
-       if(!updated) {
+       if (!updated) {
            throw new SQLException("Failed to update evacuation record with ID " + evacuationRecord.getEvacuationId());
        }
 
        return evacuationRecord;
     }
 
-    public void deleteEvacuationRecord(Integer evacuationRecordId) throws SQLException{
+    public void deleteEvacuationRecord(Integer evacuationRecordId) throws SQLException {
         requireEvacuationRecordById(evacuationRecordId);
 
         boolean deleted = evacuationRecordRepository.delete(evacuationRecordId);
-        if(!deleted) {
+        if (!deleted) {
             throw new SQLException("Failed to delete evacuation record with ID " + evacuationRecordId);
         }
     }

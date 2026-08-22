@@ -23,7 +23,8 @@ public class EmergencyEventMenu {
 
     public void show() {
         while (true) {
-            System.out.println("Emergency Event");
+            System.out.println();
+            System.out.println("Emergency event");
             System.out.println("1. Register emergency event");
             System.out.println("2. Find emergency event by ID");
             System.out.println("3. List all emergency events");
@@ -32,6 +33,7 @@ public class EmergencyEventMenu {
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.println("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -70,7 +72,7 @@ public class EmergencyEventMenu {
 
     private void registerEmergencyEvent() {
         System.out.println();
-        System.out.println("Register Emergency Event");
+        System.out.println("Register emergency event");
 
         System.out.println("Name: ");
         String name = scanner.nextLine().trim();
@@ -196,7 +198,6 @@ public class EmergencyEventMenu {
         System.out.println("Estimated affected people (-1 if unknown): ");
         Integer estimatedAffectedPeople = scanner.nextInt();
         scanner.nextLine();
-
         if (estimatedAffectedPeople == -1) {
             estimatedAffectedPeople = null;
         }
@@ -215,7 +216,7 @@ public class EmergencyEventMenu {
                 estimatedAffectedPeople
         );
 
-        try{
+        try {
             emergencyEventService.registerEmergencyEvent(emergencyEvent);
             System.out.println("Emergency event registered successfully.");
         } catch (IllegalArgumentException e) {
@@ -230,7 +231,7 @@ public class EmergencyEventMenu {
         int eventId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             EmergencyEvent event = emergencyEventService.requireEmergencyEventById(eventId);
             System.out.println(event);
         } catch (IllegalArgumentException e) {
@@ -241,12 +242,13 @@ public class EmergencyEventMenu {
     }
 
     private void listAllEmergencyEvents() {
-        try{
+        try {
             List<EmergencyEvent> events = emergencyEventService.listAllEmergencyEvents();
-            for(EmergencyEvent event : events){
+            for(EmergencyEvent event : events) {
                 System.out.println(event);
+                System.out.println();
             }
-        }catch(SQLException e) {
+        } catch(SQLException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -256,7 +258,7 @@ public class EmergencyEventMenu {
         int eventId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             EmergencyEvent event = emergencyEventService.requireEmergencyEventById(eventId);
 
             System.out.println("1. Name");
@@ -330,7 +332,7 @@ public class EmergencyEventMenu {
                     event.setCounty(scanner.nextLine().trim());
                     break;
                 case 5:
-                    System.out.println("New locality: ");
+                    System.out.println("New locality (optional): ");
                     String locality = scanner.nextLine().trim();
                     if (locality.isEmpty()) {
                         locality = null;
@@ -338,7 +340,7 @@ public class EmergencyEventMenu {
                     event.setLocality(locality);
                     break;
                 case 6:
-                    System.out.println("New affected area: ");
+                    System.out.println("New affected area (optional): ");
                     String affectedArea = scanner.nextLine().trim();
                     if (affectedArea.isEmpty()) {
                         affectedArea = null;
@@ -413,7 +415,7 @@ public class EmergencyEventMenu {
                     }
                     break;
                 case 10:
-                    System.out.println("New description: ");
+                    System.out.println("New description (optional): ");
                     String description = scanner.nextLine().trim();
                     if (description.isEmpty()) {
                         description = null;
@@ -443,11 +445,11 @@ public class EmergencyEventMenu {
     }
 
     private void deleteEmergencyEvent() {
-        System.out.println("Event ID: ");
+        System.out.println("Emergency event ID: ");
         int eventId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             emergencyEventService.deleteEmergencyEvent(eventId);
             System.out.println("Emergency event deleted successfully.");
         } catch (IllegalArgumentException e) {

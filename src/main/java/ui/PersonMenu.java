@@ -21,6 +21,7 @@ public class PersonMenu {
 
     public void show() {
         while (true) {
+            System.out.println();
             System.out.println("Persons");
             System.out.println("1. Register person");
             System.out.println("2. Find person by ID");
@@ -30,6 +31,7 @@ public class PersonMenu {
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.print("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -57,7 +59,7 @@ public class PersonMenu {
                     default:
                         System.out.println("Invalid option.");
                 }
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             } catch (DateTimeException e) {
@@ -68,7 +70,7 @@ public class PersonMenu {
 
     private void registerPerson() {
         System.out.println();
-        System.out.println("Register Person");
+        System.out.println("Register person");
 
         System.out.println("First name: ");
         String firstName = scanner.nextLine().trim();
@@ -170,7 +172,7 @@ public class PersonMenu {
         int personId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             Person person = personService.requirePersonById(personId);
             System.out.println(person);
         } catch (IllegalArgumentException e) {
@@ -181,10 +183,11 @@ public class PersonMenu {
     }
 
     private void listAllPersons() {
-        try{
+        try {
             List<Person> persons = personService.listAllPersons();
             for (Person person : persons) {
                 System.out.println(person);
+                System.out.println();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -224,7 +227,7 @@ public class PersonMenu {
                     person.setLastName(scanner.nextLine().trim());
                     break;
                 case 3:
-                    System.out.println("New birth date:");
+                    System.out.println("Birth date known?");
                     System.out.println("1. Yes");
                     System.out.println("2. No");
                     int birthDateOption = scanner.nextInt();
@@ -249,7 +252,7 @@ public class PersonMenu {
                     }
                     break;
                 case 4:
-                    System.out.print("New phone number: ");
+                    System.out.print("New phone number (optional): ");
                     String phoneNumber = scanner.nextLine().trim();
                     if (phoneNumber.isEmpty()) {
                         phoneNumber = null;
@@ -257,7 +260,7 @@ public class PersonMenu {
                     person.setPhoneNumber(phoneNumber);
                     break;
                 case 5:
-                    System.out.print("New email: ");
+                    System.out.print("New email (optional): ");
                     String email = scanner.nextLine().trim();
                     if (email.isEmpty()) {
                         email = null;
@@ -265,7 +268,7 @@ public class PersonMenu {
                     person.setEmail(email);
                     break;
                 case 6:
-                    System.out.print("New home country: ");
+                    System.out.print("New home country (optional): ");
                     String homeCountry = scanner.nextLine().trim();
                     if (homeCountry.isEmpty()) {
                         homeCountry = null;
@@ -273,7 +276,7 @@ public class PersonMenu {
                     person.setHomeCountry(homeCountry);
                     break;
                 case 7:
-                    System.out.print("New home county: ");
+                    System.out.print("New home county (optional): ");
                     String homeCounty = scanner.nextLine().trim();
                     if (homeCounty.isEmpty()) {
                         homeCounty = null;
@@ -281,7 +284,7 @@ public class PersonMenu {
                     person.setHomeCounty(homeCounty);
                     break;
                 case 8:
-                    System.out.print("New home locality: ");
+                    System.out.print("New home locality (optional): ");
                     String locality = scanner.nextLine().trim();
                     if (locality.isEmpty()) {
                         locality = null;
@@ -289,7 +292,7 @@ public class PersonMenu {
                     person.setHomeLocality(locality);
                     break;
                 case 9:
-                    System.out.print("New home address: ");
+                    System.out.print("New home address (optional): ");
                     String homeAddress = scanner.nextLine().trim();
                     if (homeAddress.isEmpty()) {
                         homeAddress = null;
@@ -297,7 +300,7 @@ public class PersonMenu {
                     person.setHomeAddress(homeAddress);
                     break;
                 case 10:
-                    System.out.print("New notes: ");
+                    System.out.print("New notes (optional): ");
                     String notes = scanner.nextLine().trim();
                     if (notes.isEmpty()) {
                         notes = null;
@@ -319,12 +322,12 @@ public class PersonMenu {
         }
     }
 
-    private void deletePerson(){
+    private void deletePerson() {
         System.out.println("Person ID: ");
         int personId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             personService.deletePerson(personId);
             System.out.println("Person deleted successfully.");
         } catch (IllegalArgumentException e) {

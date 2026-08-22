@@ -33,11 +33,7 @@ public class ShelterRepository {
     public Shelter save(Shelter shelter) throws SQLException {
         try (
                 Connection connection = DatabaseConnection.getConnection();
-
-                PreparedStatement statement = connection.prepareStatement(
-                        INSERT_SHELTER_SQL,
-                        Statement.RETURN_GENERATED_KEYS
-                )
+                PreparedStatement statement = connection.prepareStatement(INSERT_SHELTER_SQL, Statement.RETURN_GENERATED_KEYS)
         ) {
             statement.setString(1, shelter.getName());
             statement.setString(2, shelter.getCountry());
@@ -71,25 +67,25 @@ public class ShelterRepository {
     }
 
     private static final String FIND_BY_ID_SQL = """
-        SELECT
-            shelter_id,
-            name,
-            country,
-            county,
-            locality,
-            address,
-            total_capacity,
-            status,
-            phone_number,
-            email,
-            access_ramp,
-            children_area,
-            medical_room,
-            accepts_pets,
-            public_information
-        FROM shelters
-        WHERE shelter_id = ?
-        """;
+            SELECT
+                shelter_id,
+                name,
+                country,
+                county,
+                locality,
+                address,
+                total_capacity,
+                status,
+                phone_number,
+                email,
+                access_ramp,
+                children_area,
+                medical_room,
+                accepts_pets,
+                public_information
+            FROM shelters
+            WHERE shelter_id = ?
+            """;
 
     public Optional<Shelter> findById(int shelterId) throws SQLException {
         try (
@@ -125,23 +121,23 @@ public class ShelterRepository {
 
     private static final String FIND_ALL_SQL = """
            SELECT
-            shelter_id,
-            name,
-            country,
-            county,
-            locality,
-            address,
-            total_capacity,
-            status,
-            phone_number,
-            email,
-            access_ramp,
-            children_area,
-            medical_room,
-            accepts_pets,
-            public_information
-        FROM shelters
-        """;
+               shelter_id,
+                name,
+                country,
+                county,
+                locality,
+                address,
+                total_capacity,
+                status,
+                phone_number,
+                email,
+                access_ramp,
+                children_area,
+                medical_room,
+                accepts_pets,
+                public_information
+            FROM shelters
+            """;
 
     public List<Shelter> findAll() throws SQLException {
         List<Shelter> shelters = new ArrayList<>();

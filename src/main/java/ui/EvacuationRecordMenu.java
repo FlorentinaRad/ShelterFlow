@@ -20,7 +20,8 @@ public class EvacuationRecordMenu {
 
     public void show() {
         while (true) {
-            System.out.println("Evacuation record");
+            System.out.println();
+            System.out.println("Evacuation records");
             System.out.println("1. Register evacuation record");
             System.out.println("2. Find evacuation record by ID");
             System.out.println("3. List all evacuation records");
@@ -29,6 +30,7 @@ public class EvacuationRecordMenu {
             System.out.println("0. Back");
 
             try {
+                System.out.println();
                 System.out.print("Choose an option: ");
                 int option = scanner.nextInt();
                 scanner.nextLine();
@@ -56,7 +58,7 @@ public class EvacuationRecordMenu {
                     default:
                         System.out.println("Invalid option.");
                 }
-            } catch(InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Please enter a number.");
                 scanner.nextLine();
             }
@@ -65,7 +67,7 @@ public class EvacuationRecordMenu {
 
     private void registerEvacuationRecord() {
         System.out.println();
-        System.out.println("Register Evacuation Record");
+        System.out.println("Register evacuation record");
 
         System.out.println("Person ID: ");
         int personId = scanner.nextInt();
@@ -103,18 +105,18 @@ public class EvacuationRecordMenu {
         }
 
         System.out.println("Notes (optional): ");
-        String notes= scanner.nextLine().trim();
+        String notes = scanner.nextLine().trim();
         if (notes.isEmpty()) {
             notes = null;
         }
 
         EvacuationRecord evacuationRecord = new EvacuationRecord(
-                        personId,
-                        eventId,
-                        evacuationLocation,
-                        needsAssistance,
-                        assistanceDetails,
-                        notes
+                personId,
+                eventId,
+                evacuationLocation,
+                needsAssistance,
+                assistanceDetails,
+                notes
         );
 
         try {
@@ -132,7 +134,7 @@ public class EvacuationRecordMenu {
         int evacuationRecordId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             EvacuationRecord evacuationRecord = evacuationRecordService.requireEvacuationRecordById(evacuationRecordId);
             System.out.println(evacuationRecord);
         } catch (IllegalArgumentException e) {
@@ -143,10 +145,11 @@ public class EvacuationRecordMenu {
     }
 
     private void listAllEvacuationRecords() {
-        try{
+        try {
             List<EvacuationRecord> evacuationRecords = evacuationRecordService.listAllEvacuationRecords();
             for (EvacuationRecord evacuationRecord : evacuationRecords) {
                 System.out.println(evacuationRecord);
+                System.out.println();
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -154,7 +157,7 @@ public class EvacuationRecordMenu {
     }
 
     private void updateEvacuationRecord() {
-        System.out.println("Evacuation Record ID: ");
+        System.out.println("Evacuation record ID: ");
         int evacuationRecordId = scanner.nextInt();
         scanner.nextLine();
 
@@ -183,7 +186,7 @@ public class EvacuationRecordMenu {
                     scanner.nextLine();
                     break;
                 case 3:
-                    System.out.println("New evacuation location: ");
+                    System.out.println("New evacuation location (optional): ");
                     String evacuationLocation = scanner.nextLine().trim();
                     if (evacuationLocation.isEmpty()) {
                         evacuationLocation = null;
@@ -191,7 +194,7 @@ public class EvacuationRecordMenu {
                     evacuationRecord.setEvacuationLocation(evacuationLocation);
                     break;
                 case 4:
-                    System.out.println("Needs assistance: ");
+                    System.out.println("New needs assistance: ");
                     System.out.println("1. Yes");
                     System.out.println("2. No");
                     System.out.print("Choose an option: ");
@@ -207,7 +210,7 @@ public class EvacuationRecordMenu {
                     }
                     break;
                 case 5:
-                    System.out.println("New assistance details: ");
+                    System.out.println("New assistance details (optional): ");
                     String assistanceDetails = scanner.nextLine().trim();
                     if (assistanceDetails.isEmpty()) {
                         assistanceDetails = null;
@@ -215,7 +218,7 @@ public class EvacuationRecordMenu {
                     evacuationRecord.setAssistanceDetails(assistanceDetails);
                     break;
                 case 6:
-                    System.out.println("New notes: ");
+                    System.out.println("New notes (optional): ");
                     String notes = scanner.nextLine().trim();
                     if (notes.isEmpty()) {
                         notes = null;
@@ -240,7 +243,7 @@ public class EvacuationRecordMenu {
         int evacuationRecordId = scanner.nextInt();
         scanner.nextLine();
 
-        try{
+        try {
             evacuationRecordService.deleteEvacuationRecord(evacuationRecordId);
             System.out.println("Evacuation record deleted successfully.");
         } catch (IllegalArgumentException e) {
